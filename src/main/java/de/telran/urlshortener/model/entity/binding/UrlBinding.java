@@ -1,5 +1,6 @@
 package de.telran.urlshortener.model.entity.binding;
 
+import de.telran.urlshortener.model.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,8 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "url_bindings")
+@EqualsAndHashCode(exclude = "user")
+@ToString(exclude = "user")
 public class UrlBinding {
 
     @Id
@@ -37,5 +40,8 @@ public class UrlBinding {
     @Column(nullable = false)
     @Builder.Default
     private Boolean isClosed = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
 }

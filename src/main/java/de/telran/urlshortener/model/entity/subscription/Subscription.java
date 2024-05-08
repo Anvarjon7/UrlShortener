@@ -1,10 +1,8 @@
 package de.telran.urlshortener.model.entity.subscription;
 
+import de.telran.urlshortener.model.entity.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -13,6 +11,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "user")
+@ToString(exclude = "user")
 public class Subscription {
 
     @Id
@@ -21,12 +21,20 @@ public class Subscription {
     private Long id;
 
     @Column(name = "created_at")
-    private LocalDate creationDate;
+    @Builder.Default
+    private LocalDate creationDate = LocalDate.now();
 
     @Column(name = "expires_at")
-    private LocalDate expirationDate;
+    @Builder.Default
+    private LocalDate expirationDate = LocalDate.now().plusDays(30);
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+
+
 }
