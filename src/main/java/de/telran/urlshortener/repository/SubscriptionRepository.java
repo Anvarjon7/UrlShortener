@@ -9,5 +9,5 @@ import java.util.List;
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
     @Query("SELECT s FROM Subscription s WHERE s.expirationDate >= CURRENT_DATE")
-    List<Subscription> findAllActualSubscriptions();
+    List<SubscriptionRepository> findAllActualSubscriptions();
 }
