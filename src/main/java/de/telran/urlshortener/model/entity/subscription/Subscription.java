@@ -34,7 +34,4 @@ public class Subscription {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
-
-
 }
