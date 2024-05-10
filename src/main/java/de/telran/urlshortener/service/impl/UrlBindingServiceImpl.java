@@ -11,15 +11,15 @@ import java.util.Optional;
 @Service
 public class UrlBindingServiceImpl implements UrlBindingService {
 
-        private final UrlBindingRepository urlBindingRepository;
+    private final UrlBindingRepository urlBindingRepository;
 
-        @Autowired
-        public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository) {
-            this.urlBindingRepository = urlBindingRepository;
-        }
-
-        public Optional<UrlBinding> findByUid(String uid) {
-            return urlBindingRepository.findByUid(uid);
-        }
+    @Autowired
+    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository) {
+        this.urlBindingRepository = urlBindingRepository;
     }
+
+    public Optional<UrlBinding> findByUid(String uid) {
+        return urlBindingRepository.findByUid(uid);
+    }
+}
 

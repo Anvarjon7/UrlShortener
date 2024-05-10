@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
+
     private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
