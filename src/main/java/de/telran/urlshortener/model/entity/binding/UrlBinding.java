@@ -14,19 +14,29 @@ import java.time.LocalDate;
 @Table(name = "url_bindings")
 @EqualsAndHashCode(exclude = "user")
 @ToString(exclude = "user")
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "UrlBindings.withUser",
+                attributeNodes = @NamedAttributeNode("user")
+        )
+})
 public class UrlBinding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter
     private Long id;
-
     @Column(name = "original_url", nullable = false)
+    @Getter @Setter
     private String originalUrl;
     @Column(name = "base_url", nullable = false)
+    @Getter @Setter
     private String baseUrl;
     @Column(name = "path_prefix", nullable = false)
+    @Getter @Setter
     private String pathPrefix;
     @Column(name = "uid", nullable = false, unique = true)
+    @Getter @Setter
     private String uid;
     private Long count;
 
@@ -43,5 +53,5 @@ public class UrlBinding {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
+    
 }
