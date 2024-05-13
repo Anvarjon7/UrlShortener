@@ -32,25 +32,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByIdWithUrlBindingsAndSubscriptions(id);
     }
 
-    @Override
-    public User registerUser(UserResponseDto userDto) {
-        return null;
-    }
-
-    @Override
-    public User authenticateUser(String email, String password) {
-        return null;
-    }
-
-    @Override
-    public User updateUser(Long id, UserResponseDto userDto) {
-        return null;
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-
-    }
+//    @Override
+//    public User registerUser(UserResponseDto userDto) {
+//        return null;
+//    }
+//
+//    @Override
+//    public User authenticateUser(String email, String password) {
+//        return null;
+//    }
+//
+//    @Override
+//    public User updateUser(Long id, UserResponseDto userDto) {
+//        return null;
+//    }
+//
+//    @Override
+//    public void deleteUser(Long id) {
+//
+//    }
 
 
 }
