@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 /*@NoArgsConstructor
 @AllArgsConstructor*/
-public class SubscriptionDto {
+public class UrlBindingResponseDto {
 }

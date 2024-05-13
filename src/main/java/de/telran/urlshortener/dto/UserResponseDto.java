@@ -11,7 +11,7 @@ import lombok.Data;
 @Builder
 /*@NoArgsConstructor
 @AllArgsConstructor*/
-public class UserDto {
+public class UserResponseDto {
 
     private Long id;
 
