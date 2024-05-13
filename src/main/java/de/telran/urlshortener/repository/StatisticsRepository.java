@@ -15,11 +15,11 @@ public class StatisticsRepository {
     public List<TopBindingStatisticsResponse> getTopBinding(int topParam) {
         return entityManager.createQuery(
                         "SELECT new com.example.TopBindingStatisticsResponse(u.binding, COUNT(u)) " +
-                                "FROM UrlBinding u" +
-                                "GROUP BY u.binding " +
+                                "FROM UrlBinding u " +
+                                "GROUP BY u.uid " +
                                 "ORDER BY COUNT(u) DESC", TopBindingStatisticsResponse.class)
                 .setMaxResults(topParam)
-                .getResultList(); //todo написать запрос топ сзвязок по кол-ву переходов
+                .getResultList(); //todo написать запрос топ связок по кол-ву переходов
 
     }
 
