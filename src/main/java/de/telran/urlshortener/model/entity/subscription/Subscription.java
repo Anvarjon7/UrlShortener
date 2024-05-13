@@ -13,6 +13,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "user")
 @ToString(exclude = "user")
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(
+                name = "Subscription.withUser",
+                attributeNodes = @NamedAttributeNode("user")
+        )
+})
 public class Subscription {
 
     @Id

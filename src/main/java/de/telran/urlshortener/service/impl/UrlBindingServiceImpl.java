@@ -18,8 +18,8 @@ public class UrlBindingServiceImpl implements UrlBindingService {
         this.urlBindingRepository = urlBindingRepository;
     }
 
-    public Optional<UrlBinding> findByUid(String uid) {
-        return urlBindingRepository.findByUid(uid);
+    public Optional<UrlBinding> findActualByUid(String uid) {
+        return urlBindingRepository.findActualByUid(uid);
     }
 }
 
