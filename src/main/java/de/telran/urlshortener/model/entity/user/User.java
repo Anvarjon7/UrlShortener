@@ -28,6 +28,7 @@ import java.util.Set;
                 attributeNodes = {@NamedAttributeNode("bindings"),@NamedAttributeNode("subscriptions")}
         )
 })
+@Table(name = "user_")
 public class User {
 
     @Id

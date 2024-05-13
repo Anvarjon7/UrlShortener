@@ -4,6 +4,7 @@ import de.telran.urlshortener.dto.UserDto;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
