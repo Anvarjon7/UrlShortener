@@ -5,8 +5,9 @@ import de.telran.urlshortener.model.entity.user.User;
 
 public interface UserService {
 
-//    User registerUser(UserDto userDto);
-//    User authenticateUser(String email, String password);
-//    User updateUser(Long id,UserDto userDto);
-//    void deleteUser(Long id);
+    User registerUser(UserDto userDto);
+
+    User updateUser(Long id, UserDto userDto);
+
+    void deleteUser(Long id);
 }
