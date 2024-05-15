@@ -5,6 +5,7 @@ import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import java.util.Set;
 
 public interface SubscriptionService {
+
     SubscriptionResponseDto create(Long userId);
 
     SubscriptionResponseDto getById(Long id);
