@@ -35,8 +35,11 @@ public class UserResponseDto {
 
     private Role role;
 
-    public UserResponseDto(Long id, String email,
-                           String password, Set<UrlBinding> bindings,
-                           Set<Subscription> subscriptions) {
+    public UserResponseDto(
+            Long id,
+            String email,
+            String password,
+            Set<UrlBinding> bindings,
+            Set<Subscription> subscriptions) {
     }
 }
