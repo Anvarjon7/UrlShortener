@@ -42,6 +42,7 @@ public class UrlBinding {
 
     @Column(name = "created_at")
     @Builder.Default
+    @Getter @Setter
     private LocalDate creationDate = LocalDate.now();
 
     @Column(name = "expires_at")
@@ -52,6 +53,7 @@ public class UrlBinding {
     private Boolean isClosed = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Getter @Setter
     private User user;
     
 }

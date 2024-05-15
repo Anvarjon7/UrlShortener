@@ -1,9 +1,20 @@
 package de.telran.urlshortener.dto;
 
-import lombok.Data;
+import de.telran.urlshortener.model.entity.user.User;
 
-@Data
+import java.time.LocalDate;
+
 /*@NoArgsConstructor
 @AllArgsConstructor*/
-public class UrlBindingResponseDto {
+public record UrlBindingResponseDto(
+        Long id,
+        String originalUrl,
+        String baseUrl,
+        String pathPrefix,
+        String uid,
+        Long count,
+        LocalDate creationDate,
+        LocalDate expirationDate,
+        Boolean isClosed,
+        User user) {
 }

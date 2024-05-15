@@ -1,5 +1,6 @@
 package de.telran.urlshortener.service.impl;
 
+import de.telran.urlshortener.dto.UrlBindingDto;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.service.UrlBindingService;
@@ -20,6 +21,16 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     public Optional<UrlBinding> findActualByUid(String uid) {
         return urlBindingRepository.findActualByUid(uid);
+    }
+
+    @Override
+    public UrlBinding createUrlBinding(UrlBindingDto urlBindingDto) {
+        return null;
+    }
+
+    @Override
+    public void deleteUrlBinding(Long bindingId) {
+
     }
 }
 
