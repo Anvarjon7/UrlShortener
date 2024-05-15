@@ -1,6 +1,6 @@
 package de.telran.urlshortener.service.impl;
 
-import de.telran.urlshortener.dto.UserResponseDto;
+import de.telran.urlshortener.dto.UserDto;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UserService;
@@ -31,14 +31,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByIdWithUrlBindingsAndSubscriptions(id);
     }
 
+
     @Override
-    public User registerUser(UserResponseDto userDto) {
+    public User registerUser(UserDto userDto) {
         return null;
     }
 
-
     @Override
-    public User updateUser(Long id, UserResponseDto userDto) {
+    public User updateUser(Long id, UserDto userDto) {
         return null;
     }
 
@@ -46,8 +46,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
 
     }
-
-
 }
 
 

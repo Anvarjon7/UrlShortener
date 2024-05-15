@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
+
     private UserRepository userRepository;
 
     @Autowired
@@ -24,7 +25,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public UserStatisticsResponse getUserStatistics(Long userId) {
         User user = userRepository.findByIdWithBindings(userId).orElseThrow(
-                ()->new RuntimeException("Can not find user with id = " + userId) //todo заменить на свой Exception
+                () -> new RuntimeException("Can not find user with id = " + userId) //todo заменить на свой Exception
         );
 
         return new UserStatisticsResponse(user.getBindings().stream()

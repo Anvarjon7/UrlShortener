@@ -15,7 +15,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository){
+    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository) {
         this.subscriptionRepository = subscriptionRepository;
     }
 

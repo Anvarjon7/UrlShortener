@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @EntityGraph(value ="User.withSubscriptions",type =EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "User.withSubscriptions", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select u from User u where u.id = :id")
     Optional<User> findByIdWithSubscriptions(Long id);
 
