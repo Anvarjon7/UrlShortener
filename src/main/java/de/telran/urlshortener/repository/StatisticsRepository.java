@@ -14,7 +14,7 @@ public class StatisticsRepository {
 
     public List<TopBindingStatisticsResponse> getTopBinding(int topParam) {
         return entityManager.createQuery(
-                        "SELECT new com.example.TopBindingStatisticsResponse(u.binding, COUNT(u)) " +
+                        "SELECT new com.example.TopBindingStatisticsResponse(u.baseUrl, COUNT(u)) " +
                                 "FROM UrlBinding u " +
                                 "GROUP BY u.uid " +
                                 "ORDER BY COUNT(u) DESC", TopBindingStatisticsResponse.class)
