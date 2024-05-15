@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
+
     private UserRepository userRepository;
 
     @Autowired

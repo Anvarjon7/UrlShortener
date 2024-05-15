@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-
     @Override
     public UserResponseDto updateUser(Long userId) {
         return null;
