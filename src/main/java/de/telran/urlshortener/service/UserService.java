@@ -1,7 +1,6 @@
 package de.telran.urlshortener.service;
 
-import de.telran.urlshortener.dto.UserDto;
-import de.telran.urlshortener.model.entity.user.User;
+import de.telran.urlshortener.dto.UserResponseDto;
 
 public interface UserService {
 
@@ -9,4 +8,13 @@ public interface UserService {
 //    User authenticateUser(String email, String password);
 //    User updateUser(Long id,UserDto userDto);
 //    void deleteUser(Long id);
+UserResponseDto registerUser(Long userId);
+
+    UserResponseDto authenticateUser(String email, String password);
+
+    UserResponseDto updateUser(Long userId);
+
+    void deleteUser(Long userId);
+
+
 }
