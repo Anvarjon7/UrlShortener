@@ -36,10 +36,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public UserResponseDto authenticateUser(String email, String password) {
-        return null;
-    }
 
     @Override
     public UserResponseDto updateUser(Long userId) {

@@ -10,7 +10,6 @@ public interface UserService {
 //    void deleteUser(Long id);
 UserResponseDto registerUser(Long userId);
 
-    UserResponseDto authenticateUser(String email, String password);
 
     UserResponseDto updateUser(Long userId);
 
