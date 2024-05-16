@@ -2,6 +2,7 @@ package de.telran.urlshortener.service.impl;
 
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.dto.UrlBindingResponseDto;
+import de.telran.urlshortener.mapper.UrlBindingMapper;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.service.UrlBindingService;
@@ -15,10 +16,12 @@ import java.util.Set;
 public class UrlBindingServiceImpl implements UrlBindingService {
 
     private final UrlBindingRepository urlBindingRepository;
+    private final UrlBindingMapper urlBindingMapper;
 
     @Autowired
-    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository) {
+    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository, UrlBindingMapper urlBindingMapper) {
         this.urlBindingRepository = urlBindingRepository;
+        this.urlBindingMapper = urlBindingMapper;
     }
 
     public Optional<UrlBinding> findActualByUid(String uid) {
@@ -38,17 +41,20 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBindingResponseDto getByUid(String uid) {
-        return null;
+        UrlBinding urlBinding = urlBindingRepository.findActualByUid(uid)
+                .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
+        return urlBindingMapper.toUrlBindingResponseDto(urlBinding);
     }
 
     @Override
     public Set<UrlBindingResponseDto> getByUserId(Long userId) {
-        return null;
+        Set<UrlBinding> urlBindings = urlBindingRepository.findByIdWithUser(userId);
+        return urlBindingMapper.toUrlBindingResponseDtoSet(urlBindings);
     }
 
     @Override
     public void deleteUrlBinding(Long bindingId) {
-
+        urlBindingRepository.deleteById(bindingId);
     }
 }
 

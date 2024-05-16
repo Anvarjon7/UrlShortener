@@ -4,6 +4,7 @@ import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.UserStatisticsResponse;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.user.User;
+import de.telran.urlshortener.repository.StatisticsRepository;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private UserRepository userRepository;
 
+    private final StatisticsRepository statisticsRepository;
+
     @Autowired
-    public StatisticsServiceImpl(UserRepository userRepository) {
+    public StatisticsServiceImpl(UserRepository userRepository, StatisticsRepository statisticsRepository) {
         this.userRepository = userRepository;
+        this.statisticsRepository = statisticsRepository;
     }
 
 
@@ -34,6 +38,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public TopBindingStatisticsResponse getBindingTop(int topParam) {
-        return null;
+        return statisticsRepository.getTopUrlBinding(topParam);
     }
 }
