@@ -5,11 +5,9 @@ import de.telran.urlshortener.model.entity.subscription.Subscription;
 
 import java.util.Set;
 
-public record UserResponseDto(
-        Long id,
-        String firstName,
-        String lastName,
-        String email
-) {
+public record FullUserResponseDto(
+        UserResponseDto userResponseDto,
+        Set<Subscription> subscriptions,
+        Set<UrlBinding> bindings) {
 
 }
