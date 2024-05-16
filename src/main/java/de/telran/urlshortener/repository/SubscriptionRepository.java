@@ -7,13 +7,18 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
-    @Query("SELECT s FROM Subscription s WHERE s.expirationDate >= CURRENT_DATE")
-    List<SubscriptionRepository> findAllActualSubscriptions();
+    @Query("SELECT s FROM Subscription s WHERE s.user.id = :userId AND s.expirationDate >= CURRENT_DATE")
+    List<Subscription> findAllActualSubscriptions(Long userId);
 
     @EntityGraph(value = "Subscription.withUser", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT s FROM Subscription s WHERE s.id = :id")
     Optional<Subscription> findByIdWithUser(Long id);
+
+
+    Set<Subscription> findByUser_Id(Long userId);
+
 }
