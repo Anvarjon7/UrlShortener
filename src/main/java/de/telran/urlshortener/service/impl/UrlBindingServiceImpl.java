@@ -4,7 +4,10 @@ import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.dto.UrlBindingResponseDto;
 import de.telran.urlshortener.mapper.UrlBindingMapper;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
+import de.telran.urlshortener.model.entity.subscription.Subscription;
+import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
+import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UrlBindingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,12 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     private final UrlBindingRepository urlBindingRepository;
     private final UrlBindingMapper urlBindingMapper;
-
+    private final UserRepository userRepository;
     @Autowired
-    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository, UrlBindingMapper urlBindingMapper) {
+    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository, UrlBindingMapper urlBindingMapper, UserRepository userRepository) {
         this.urlBindingRepository = urlBindingRepository;
         this.urlBindingMapper = urlBindingMapper;
+        this.userRepository = userRepository;
     }
 
     public Optional<UrlBinding> findActualByUid(String uid) {
@@ -31,12 +35,19 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBindingResponseDto createUrlBinding(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
 
-        return null;
+        User user = userRepository.findById(urlBindingCreateRequestDto.userId())
+                .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
+        UrlBinding urlBinding = UrlBinding.builder().build();
+        urlBinding = urlBindingRepository.save(urlBinding);
+
+        return urlBindingMapper.toUrlBindingResponseDto(urlBinding);
     }
 
     @Override
     public void closeUrlBinding(Long bindingId) {
-
+        UrlBinding urlBinding = urlBindingRepository.findById(bindingId)
+                .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
+        urlBinding.setIsClosed(true);
     }
 
     @Override
