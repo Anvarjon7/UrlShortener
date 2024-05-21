@@ -1,26 +1,30 @@
 package de.telran.urlshortener.service.impl;
 
+import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserRequestDto;
-import de.telran.urlshortener.dto.UserResponseDto;
+import de.telran.urlshortener.mapper.UserMapper;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.query.sqm.EntityTypeException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private UserMapper userMapper;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> findByIdWithSubscriptions(Long id) {
@@ -61,6 +65,21 @@ public class UserServiceImpl implements UserService {
         existingUser.setPassword(userRequestDto.getPassword());
         existingUser.setRole(userRequestDto.getRole());
         return userRepository.save(existingUser);
+    }
+
+    @Override
+    public List<FullUserResponseDto> getAllUser() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userMapper::toUserResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public FullUserResponseDto getByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with " + email));
+        return userMapper.toUserResponseDto(user);
     }
 
     @Override

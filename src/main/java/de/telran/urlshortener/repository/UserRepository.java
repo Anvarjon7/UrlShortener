@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(value = "User.withUrlBindingsAndSubscriptions", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select u from User u where u.id = :id")
     Optional<User> findByIdWithUrlBindingsAndSubscriptions(Long id);
+
+    Optional<User> findByEmail(String email);
 }
