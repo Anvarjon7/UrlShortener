@@ -3,6 +3,7 @@ package de.telran.urlshortener.controller;
 
 import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserRequestDto;
+import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.service.UserService;
 import jakarta.validation.Valid;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RestController("api/users")
-
+@RestController
+@RequestMapping(value = "/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -27,9 +28,9 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
-        User userResponseDto = userService.registerUser(userRequestDto);
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
+        UserResponseDto userResponseDto = userService.registerUser(userRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
 
     @PutMapping("/update/{id}")
@@ -45,14 +46,14 @@ public class UserController {
     }
 
     @GetMapping("/all-users")
-    public ResponseEntity<List<FullUserResponseDto>> getAllUsers() {
-        List<FullUserResponseDto> allUsers = userService.getAllUser();
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        List<UserResponseDto> allUsers = userService.getAllUser();
         return ResponseEntity.ok(allUsers);
     }
 
     @GetMapping("/by-email")
-    public ResponseEntity<FullUserResponseDto> getByEmail(@RequestParam @Email String email) {
-        FullUserResponseDto userResponseDto = userService.getByEmail(email);
+    public ResponseEntity<UserResponseDto> getByEmail(@RequestParam @Email String email) {
+        UserResponseDto userResponseDto = userService.getByEmail(email);
         return ResponseEntity.ok(userResponseDto);
     }
 }

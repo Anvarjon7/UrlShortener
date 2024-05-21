@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public FullUserResponseDto toUserResponseDto(User user) {
+    public FullUserResponseDto toFullUserResponseDto(User user) {
         return new FullUserResponseDto(
                 new UserResponseDto(
                         user.getId(),
@@ -16,9 +16,19 @@ public class UserMapper {
                         user.getEmail()),
                 user.getSubscriptions(),
                 user.getBindings()
+        );
+    }
 
-        )
+
+    public UserResponseDto toUserResponseDto(User user) {
+        return new UserResponseDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail())
+
 
                 ;
     }
+
 }

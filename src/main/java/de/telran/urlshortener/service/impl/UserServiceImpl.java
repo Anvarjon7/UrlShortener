@@ -2,6 +2,7 @@ package de.telran.urlshortener.service.impl;
 
 import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserRequestDto;
+import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.mapper.UserMapper;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User registerUser(UserRequestDto userRequestDto) {
+    public UserResponseDto registerUser(UserRequestDto userRequestDto) {
         User user = User.builder()
                 .firstName(userRequestDto.getFirstName())
                 .lastName(userRequestDto.getLastName())
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .password(userRequestDto.getPassword())
                 .role(userRequestDto.getRole())
                 .build();
-        return userRepository.save(user);
+        return userMapper.toUserResponseDto(user);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<FullUserResponseDto> getAllUser() {
+    public List<UserResponseDto> getAllUser() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(userMapper::toUserResponseDto)
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public FullUserResponseDto getByEmail(String email) {
+    public UserResponseDto getByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with " + email));
         return userMapper.toUserResponseDto(user);
