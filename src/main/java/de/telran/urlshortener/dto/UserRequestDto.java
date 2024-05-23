@@ -28,10 +28,10 @@ public class UserRequestDto {
     @Email(message = "Invalid email")
     private String email;
 
-    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
+    @Size(min = 8, max = 30, message = "Password must be between 8 and 30 characters")
     @Pattern(
-            regexp = "^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.[@#$%^&+=]).{6,20}$",
-            message = "Password must be between 6 and 20 characters, and include at least one digit, one lowercase letter, one uppercase letter, and one special character (@#$%^&+=)"
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,30}$",
+            message = "Password must be between 8 and 30 characters, and include at least one digit, one lowercase letter, one uppercase letter, and one special character (!@#$%^&*)"
     )
     private String password;
 

@@ -4,6 +4,7 @@ package de.telran.urlshortener.controller;
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.service.UserService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,13 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody /*@Valid*/ UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
         UserResponseDto userResponseDto = userService.registerUser(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody /*@Valid*/ UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
         UserResponseDto updatedUser = userService.updateUser(id, userRequestDto);
         return ResponseEntity.ok(updatedUser);
     }
