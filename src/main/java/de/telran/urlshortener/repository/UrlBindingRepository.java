@@ -11,7 +11,8 @@ import java.util.Set;
 public interface UrlBindingRepository extends JpaRepository<UrlBinding, Long> {
 
     @EntityGraph(value = "UrlBinding.withUser", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select u from UrlBinding u where u.id = :id")
+//    @Query("select u from UrlBinding u where u.id = :id")
+    @Query("select u from UrlBinding u where u.user.id = :id")
     Set<UrlBinding> findByIdWithUser(Long id);
 
     @Query("select u from UrlBinding u where u.uid = :uid and u.isClosed = false and u.expirationDate >=CURRENT_DATE")

@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 @RestController
-@RequestMapping(value = "/api/url-binding")
+@RequestMapping(value = "/api/urlbinding")
 @RequiredArgsConstructor
 public class UrlBindingController {
 
@@ -39,13 +39,13 @@ public class UrlBindingController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getbyuserid/{id}")
     public ResponseEntity<Set<UrlBindingResponseDto>> getByUserId(@PathVariable Long id) {
         Set<UrlBindingResponseDto> urlBinding = urlBindingService.getByUserId(id);
         return ResponseEntity.ok(urlBinding);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{uid}")
     public ResponseEntity<UrlBindingResponseDto> getByUid(@PathVariable String uid) {
         UrlBindingResponseDto urlBindingResponseDto = urlBindingService.getByUid(uid);
         return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);

@@ -36,11 +36,18 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
         User user = userRepository.findById(urlBindingCreateRequestDto.userId())
                 .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
-        UrlBinding urlBinding = UrlBinding.builder().build();
-        user.addBinding(urlBinding);
-        urlBinding = urlBindingRepository.save(urlBinding);
+        UrlBinding urlBinding = UrlBinding.builder()
+                .baseUrl("baseUrl")
+                .originalUrl(urlBindingCreateRequestDto.originalUrl())
+                .expirationDate(urlBindingCreateRequestDto.expirationDate())
+                .user(user)
+                .pathPrefix("pathPref")
+                .uid("")
+                .build();
 
-        return urlBindingMapper.toUrlBindingResponseDto(urlBinding);
+        UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
+        user.addBinding(urlBinding);
+        return urlBindingMapper.toUrlBindingResponseDto(saveUrlBinding);
     }
 
     @Override
@@ -48,6 +55,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
         UrlBinding urlBinding = urlBindingRepository.findById(bindingId)
                 .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
         urlBinding.setIsClosed(true);
+        UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
     }
 
     @Override
