@@ -4,7 +4,6 @@ import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.dto.UrlBindingResponseDto;
 import de.telran.urlshortener.mapper.UrlBindingMapper;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
-import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.repository.UserRepository;
@@ -38,6 +37,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
         User user = userRepository.findById(urlBindingCreateRequestDto.userId())
                 .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
         UrlBinding urlBinding = UrlBinding.builder().build();
+        user.addBinding(urlBinding);
         urlBinding = urlBindingRepository.save(urlBinding);
 
         return urlBindingMapper.toUrlBindingResponseDto(urlBinding);

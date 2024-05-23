@@ -1,5 +1,6 @@
 package de.telran.urlshortener.service.impl;
 
+
 import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.UserStatisticsResponse;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
