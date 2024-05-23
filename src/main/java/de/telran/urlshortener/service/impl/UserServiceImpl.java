@@ -1,6 +1,5 @@
 package de.telran.urlshortener.service.impl;
 
-import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.mapper.UserMapper;
@@ -10,6 +9,7 @@ import de.telran.urlshortener.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
@@ -50,11 +50,12 @@ public class UserServiceImpl implements UserService {
                 .password(userRequestDto.getPassword())
                 .role(userRequestDto.getRole())
                 .build();
-        return userMapper.toUserResponseDto(user);
+        User saveUser = userRepository.save(user);
+        return userMapper.toUserResponseDto(saveUser);
     }
 
     @Override
-    public User updateUser(Long id, UserRequestDto userRequestDto) {
+    public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("Not found with id " + id);
@@ -65,15 +66,30 @@ public class UserServiceImpl implements UserService {
         existingUser.setEmail(userRequestDto.getEmail());
         existingUser.setPassword(userRequestDto.getPassword());
         existingUser.setRole(userRequestDto.getRole());
-        return userRepository.save(existingUser);
+        User savedUser = userRepository.save(existingUser);
+        return userMapper.toUserResponseDto(savedUser);
     }
 
     @Override
     public List<UserResponseDto> getAllUser() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
+        List<User> user = userRepository.findAll();
+        return user.stream()
                 .map(userMapper::toUserResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDto getById(@PathVariable Long id) {
+        UserResponseDto userResponseDto = null;
+        if (id != null) {
+            Optional<User> user = userRepository.findById(id);
+            if (user.isPresent()) {
+                userResponseDto = userMapper.toUserResponseDto(user.get());
+            } else {
+                throw new EntityNotFoundException("User not found with " + id);
+            }
+        }
+        return userResponseDto;
     }
 
     @Override
@@ -82,6 +98,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with " + email));
         return userMapper.toUserResponseDto(user);
     }
+
 
     @Override
     public void deleteUser(Long id) {
