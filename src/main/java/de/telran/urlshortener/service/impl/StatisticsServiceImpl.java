@@ -11,6 +11,7 @@ import de.telran.urlshortener.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,12 +34,21 @@ public class StatisticsServiceImpl implements StatisticsService {
                 () -> new RuntimeException("Can not find user with id = " + userId) //todo заменить на свой Exception
         );
 
-        return new UserStatisticsResponse(user.getBindings().stream()
+        return new UserStatisticsResponse(user.getId(), user.getBindings().stream()
                 .collect(Collectors.toMap(UrlBinding::getId, UrlBinding::getCount)));
     }
 
     @Override
     public TopBindingStatisticsResponse getBindingTop(int topParam) {
         return statisticsRepository.getTopUrlBinding(topParam);
+    }
+
+    @Override
+    public List<UserStatisticsResponse> getAllUserStatistics() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> new UserStatisticsResponse(user.getId(), user.getBindings().stream()
+                        .collect(Collectors.toMap(UrlBinding::getId, UrlBinding::getCount))))
+                .collect(Collectors.toList());
     }
 }
