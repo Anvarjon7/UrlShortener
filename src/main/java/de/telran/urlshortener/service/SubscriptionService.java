@@ -18,7 +18,7 @@ public interface SubscriptionService {
 
     void delete(Long id);
 
-    Set<SubscriptionResponseDto> getByUserId(Long id);
+    Set<SubscriptionResponseDto> getByUserId(Long userId);
 
     Optional<Subscription> findByIdWithUser(Long id);
 

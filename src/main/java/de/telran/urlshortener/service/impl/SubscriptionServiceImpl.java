@@ -72,8 +72,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
-    public Set<SubscriptionResponseDto> getByUserId(Long id) {
-        Set<Subscription> subscriptions = subscriptionRepository.findByUserId(id);
+    public Set<SubscriptionResponseDto> getByUserId(Long userId) {
+        Set<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
         return subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
     }
 }

@@ -41,8 +41,8 @@ public class SubscriptionController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long id) {
-        Set<SubscriptionResponseDto> subscriptions = subscriptionService.getByUserId(id);
+    public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long userId) {
+        Set<SubscriptionResponseDto> subscriptions = subscriptionService.getByUserId(userId);
         return ResponseEntity.ok(subscriptions);
     }
 }
