@@ -1,6 +1,5 @@
 package de.telran.urlshortener.controller;
 
-import de.telran.urlshortener.dto.SubscriptionRequestDto;
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.service.SubscriptionService;
 import jakarta.validation.Valid;
@@ -18,8 +17,8 @@ public class SubscriptionController {
 
 
     @PostMapping("/{id}")
-    public ResponseEntity<SubscriptionResponseDto> createSubscription(@Valid @RequestBody SubscriptionRequestDto subscriptionRequestDto) {
-        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.create(subscriptionRequestDto);
+    public ResponseEntity<SubscriptionResponseDto> createSubscription(Long id) {
+        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.create(id);
         return ResponseEntity.ok(subscriptionResponseDto);
     }
 

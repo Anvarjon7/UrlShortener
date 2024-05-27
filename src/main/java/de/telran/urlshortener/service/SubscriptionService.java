@@ -1,6 +1,5 @@
 package de.telran.urlshortener.service;
 
-import de.telran.urlshortener.dto.SubscriptionRequestDto;
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 
@@ -10,7 +9,8 @@ import java.util.Set;
 
 public interface SubscriptionService {
 
-    SubscriptionResponseDto create(SubscriptionRequestDto subscriptionRequestDto);
+
+    SubscriptionResponseDto create(Long id);
 
     SubscriptionResponseDto getById(Long id);
 

@@ -1,6 +1,5 @@
 package de.telran.urlshortener.service.impl;
 
-import de.telran.urlshortener.dto.SubscriptionRequestDto;
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.mapper.SubscriptionMapper;
 import de.telran.urlshortener.model.entity.subscription.Status;
@@ -38,16 +37,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionRepository.findByIdWithUser(id);
     }
 
+
     @Override
-    public SubscriptionResponseDto create(SubscriptionRequestDto subscriptionRequestDto) {
-        User user = userRepository.findById(subscriptionRequestDto.getUser().getId())
+    public SubscriptionResponseDto create(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
-        Subscription subscription = Subscription.builder()
-                .creationDate(subscriptionRequestDto.getCreationDate())
-                .expirationDate(subscriptionRequestDto.getExpirationDate())
-                .status(subscriptionRequestDto.getStatus())
-                .user(user)
-                .build();
+        Subscription subscription = Subscription.builder().build();
+        user.addSubscription(subscription);
+
+
 
         Subscription saveSubscription = subscriptionRepository.save(subscription);
         user.addSubscription(subscription);
