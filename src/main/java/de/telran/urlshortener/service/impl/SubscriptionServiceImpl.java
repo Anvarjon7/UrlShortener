@@ -11,6 +11,8 @@ import de.telran.urlshortener.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -27,6 +29,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         this.userRepository = userRepository;
     }
 
+    public List<Subscription> findByActualSubscriptions(Long userId) {
+        return subscriptionRepository.findAllActualSubscriptions(userId);
+    }
+
+    public Optional<Subscription> findByIdWithUser(Long id) {
+        return subscriptionRepository.findByIdWithUser(id);
+    }
+
 
     @Override
     public SubscriptionResponseDto create(Long userId) {
@@ -38,6 +48,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         return subscriptionMapper.toSubscriptionResponseDto(subscription);
     }
+
 
     @Override
     public SubscriptionResponseDto getById(Long id) {
@@ -59,9 +70,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionRepository.deleteById(id);
     }
 
+
     @Override
     public Set<SubscriptionResponseDto> getByUserId(Long userId) {
-        Set<Subscription> subscriptions = subscriptionRepository.findByUser_Id(userId);
+        Set<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
         return subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
     }
 }

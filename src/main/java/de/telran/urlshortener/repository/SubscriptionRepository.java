@@ -19,6 +19,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     Optional<Subscription> findByIdWithUser(Long id);
 
 
-    Set<Subscription> findByUser_Id(Long userId);
+    Set<Subscription> findByUserId(Long userId);
 
 }
