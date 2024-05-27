@@ -55,5 +55,8 @@ public class UrlBinding {
     @ManyToOne(fetch = FetchType.LAZY)
     @Getter @Setter
     private User user;
-    
+
+    public String GetShort(){
+        return this.getBaseUrl()+this.getPathPrefix()+this.getUid();
+    }
 }

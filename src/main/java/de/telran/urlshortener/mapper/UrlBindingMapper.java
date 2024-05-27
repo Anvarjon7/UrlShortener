@@ -16,7 +16,8 @@ public class UrlBindingMapper {
         return new UrlBindingResponseDto(
                 urlBinding.getId(),
                 urlBinding.getOriginalUrl(),
-                urlBinding.getBaseUrl(),
+//                urlBinding.getBaseUrl(),
+                urlBinding.GetShort(),
                 urlBinding.getCount(),
                 urlBinding.getCreationDate(),
                 urlBinding.getExpirationDate()
