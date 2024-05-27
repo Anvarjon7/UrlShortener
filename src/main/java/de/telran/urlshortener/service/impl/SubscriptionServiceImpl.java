@@ -1,5 +1,6 @@
 package de.telran.urlshortener.service.impl;
 
+import de.telran.urlshortener.dto.SubscriptionRequestDto;
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.mapper.SubscriptionMapper;
 import de.telran.urlshortener.model.entity.subscription.Status;
@@ -11,6 +12,8 @@ import de.telran.urlshortener.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -27,17 +30,31 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         this.userRepository = userRepository;
     }
 
+    public List<Subscription> findByActualSubscriptions(Long userId) {
+        return subscriptionRepository.findAllActualSubscriptions(userId);
+    }
+
+    public Optional<Subscription> findByIdWithUser(Long id) {
+        return subscriptionRepository.findByIdWithUser(id);
+    }
 
     @Override
-    public SubscriptionResponseDto create(Long userId) {
-        User user = userRepository.findById(userId)
+    public SubscriptionResponseDto create(SubscriptionRequestDto subscriptionRequestDto) {
+        User user = userRepository.findById(subscriptionRequestDto.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
-        Subscription subscription = Subscription.builder().build();
-        user.addSubscription(subscription);
-        subscription = subscriptionRepository.save(subscription);
+        Subscription subscription = Subscription.builder()
+                .creationDate(subscriptionRequestDto.getCreationDate())
+                .expirationDate(subscriptionRequestDto.getExpirationDate())
+                .status(subscriptionRequestDto.getStatus())
+                .user(user)
+                .build();
 
-        return subscriptionMapper.toSubscriptionResponseDto(subscription);
+        Subscription saveSubscription = subscriptionRepository.save(subscription);
+        user.addSubscription(subscription);
+
+        return subscriptionMapper.toSubscriptionResponseDto(saveSubscription);
     }
+
 
     @Override
     public SubscriptionResponseDto getById(Long id) {
@@ -59,9 +76,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionRepository.deleteById(id);
     }
 
+
     @Override
     public Set<SubscriptionResponseDto> getByUserId(Long userId) {
-        Set<Subscription> subscriptions = subscriptionRepository.findByUser_Id(userId);
+        Set<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
         return subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
     }
 }
