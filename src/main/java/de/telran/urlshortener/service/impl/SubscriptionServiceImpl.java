@@ -39,18 +39,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
-    public SubscriptionResponseDto create(Long id) {
-        User user = userRepository.findById(id)
+    public SubscriptionResponseDto create(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
         Subscription subscription = Subscription.builder().build();
         user.addSubscription(subscription);
+        subscription = subscriptionRepository.save(subscription);
 
-
-
-        Subscription saveSubscription = subscriptionRepository.save(subscription);
-        user.addSubscription(subscription);
-
-        return subscriptionMapper.toSubscriptionResponseDto(saveSubscription);
+        return subscriptionMapper.toSubscriptionResponseDto(subscription);
     }
 
 
@@ -76,8 +72,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
-    public Set<SubscriptionResponseDto> getByUserId(Long userId) {
-        Set<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
+    public Set<SubscriptionResponseDto> getByUserId(Long id) {
+        Set<Subscription> subscriptions = subscriptionRepository.findByUserId(id);
         return subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
     }
 }

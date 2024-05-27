@@ -2,36 +2,36 @@ package de.telran.urlshortener.controller;
 
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.service.SubscriptionService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/subscriptions")
+@RequestMapping(value = "/api/subscription")
 @RequiredArgsConstructor
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
 
-    @PostMapping("/{id}")
-    public ResponseEntity<SubscriptionResponseDto> createSubscription(Long id) {
-        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.create(id);
-        return ResponseEntity.ok(subscriptionResponseDto);
+    @PostMapping("/create/{userId}")
+    public ResponseEntity<SubscriptionResponseDto> createSubscription(@PathVariable Long userId) {
+        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.create(userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionResponseDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubscriptionResponseDto> getById(@Valid @RequestBody Long id) {
+    public ResponseEntity<SubscriptionResponseDto> getById(@PathVariable Long id) {
         SubscriptionResponseDto subscriptionResponseDto = subscriptionService.getById(id);
         return ResponseEntity.ok(subscriptionResponseDto);
     }
 
-    @PatchMapping("/{id}/paid")
-    public ResponseEntity<SubscriptionResponseDto> setSubscriptionPaidStatus(@PathVariable Long id) {
-        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.setPaidStatus(id);
-        return ResponseEntity.ok(subscriptionResponseDto);
+    @PutMapping("/{id}/paid")
+    public ResponseEntity setPaidStatus(@PathVariable Long id) {
+        subscriptionService.setPaidStatus(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -41,9 +41,9 @@ public class SubscriptionController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long userId) {
-        Set<SubscriptionResponseDto> subscriptionResponseDto = subscriptionService.getByUserId(userId);
-        return ResponseEntity.ok(subscriptionResponseDto);
+    public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long id) {
+        Set<SubscriptionResponseDto> subscriptions = subscriptionService.getByUserId(id);
+        return ResponseEntity.ok(subscriptions);
     }
 }
 

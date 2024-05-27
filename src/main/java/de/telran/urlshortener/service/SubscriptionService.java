@@ -10,7 +10,7 @@ import java.util.Set;
 public interface SubscriptionService {
 
 
-    SubscriptionResponseDto create(Long id);
+    SubscriptionResponseDto create(Long userId);
 
     SubscriptionResponseDto getById(Long id);
 
@@ -18,7 +18,7 @@ public interface SubscriptionService {
 
     void delete(Long id);
 
-    Set<SubscriptionResponseDto> getByUserId(Long userId);
+    Set<SubscriptionResponseDto> getByUserId(Long id);
 
     Optional<Subscription> findByIdWithUser(Long id);
 
