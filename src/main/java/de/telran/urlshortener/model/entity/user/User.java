@@ -58,11 +58,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<UrlBinding> bindings;
 
-    public void addSubscription(Subscription subscription){
-        if (subscription == null) throw new RuntimeException("subscription cant be null");// todo create own Exception
-        subscriptions.add(subscription);
-        subscription.setUser(this);
-    }
+
 
 
 }
