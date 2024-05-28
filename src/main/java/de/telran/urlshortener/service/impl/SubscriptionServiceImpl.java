@@ -33,7 +33,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Subscription create(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
-        Subscription subscription = Subscription.builder().build();
+        Subscription subscription = Subscription.builder()
+                .user(user)
+                .build();
         subscriptionRepository.save(subscription);
 
         return subscription;

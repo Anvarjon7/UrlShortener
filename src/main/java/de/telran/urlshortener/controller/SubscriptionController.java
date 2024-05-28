@@ -36,7 +36,6 @@ public class SubscriptionController {
     @PutMapping("/{id}")
     public ResponseEntity setPaidStatus(@PathVariable Long id) {
         subscriptionService.setPaidStatus(id);
-
         return ResponseEntity.ok().build();
     }
 
@@ -50,7 +49,6 @@ public class SubscriptionController {
     public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long userId) {
         Set<Subscription> subscriptions = subscriptionService.getByUserId(userId);
         Set<SubscriptionResponseDto> subscriptionResponseDtos = subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
-
         return ResponseEntity.ok(subscriptionResponseDtos);
     }
 
