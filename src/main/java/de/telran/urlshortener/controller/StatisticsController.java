@@ -17,14 +17,14 @@ public class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserStatisticsResponse> getStatistics(@PathVariable Long id) {
-        UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(id);
+    @GetMapping("/getStatistics/{userId}")
+    public ResponseEntity<UserStatisticsResponse> getStatistics(@PathVariable Long userId) {
+        UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(userId);
         return ResponseEntity.ok(userStatistics);
     }
 
-    @GetMapping("/top")
-    public ResponseEntity<TopBindingStatisticsResponse> getTopStatistics(@RequestParam @Min(5  ) int top) {
+    @GetMapping("/top/{top}")
+    public ResponseEntity<TopBindingStatisticsResponse> getTopStatistics(@PathVariable int top) {
         TopBindingStatisticsResponse topBindingStatistics = statisticsService.getBindingTop(top);
         return ResponseEntity.ok(topBindingStatistics);
     }

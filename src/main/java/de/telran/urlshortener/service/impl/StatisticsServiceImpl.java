@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final StatisticsRepository statisticsRepository;
 
