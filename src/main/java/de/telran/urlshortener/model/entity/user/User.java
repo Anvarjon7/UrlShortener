@@ -64,22 +64,5 @@ public class User {
         subscription.setUser(this);
     }
 
-    public void removeSubscription(Subscription subscription){
-        if (subscription == null) throw new RuntimeException("subscription cant be null");// todo create own Exception
-        subscriptions.remove(subscription);
-        subscription.setUser(null);
-    }
-
-    public void addBinding(UrlBinding binding){
-        if (binding == null) throw new RuntimeException("binding cant be null");// todo create own Exception
-        bindings.add(binding);
-        binding.setUser(this);
-    }
-
-    public void removeBinding(UrlBinding binding){
-        if (binding == null) throw new RuntimeException("binding cant be null");// todo create own Exception
-        bindings.remove(binding);
-        binding.setUser(null);
-    }
 
 }

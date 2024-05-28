@@ -57,7 +57,7 @@ public class UrlBinding {
     @Getter @Setter
     private User user;
 
-    public String GetShort(){
+    public String getShort(){
         return this.getBaseUrl()+this.getPathPrefix()+this.getUid();
     }
 }
