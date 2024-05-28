@@ -1,5 +1,6 @@
 package de.telran.urlshortener.model.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 import jakarta.persistence.*;
@@ -53,16 +54,11 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Subscription> subscriptions;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<UrlBinding> bindings;
-
-    public void addSubscription(Subscription subscription){
-        if (subscription == null) throw new RuntimeException("subscription cant be null");// todo create own Exception
-        subscriptions.add(subscription);
-        subscription.setUser(this);
-    }
 
 
 }

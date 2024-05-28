@@ -8,12 +8,13 @@ import java.util.Set;
 
 public interface SubscriptionService {
 
+    Subscription findById(Long id);
 
     Subscription create(Long userId);
 
-    Subscription getById(Long id);
+    Optional<Subscription> getById(Long id);
 
-    Subscription setPaidStatus(Long id);
+    void setPaidStatus(Long id);
 
     void delete(Long id);
 
@@ -22,7 +23,6 @@ public interface SubscriptionService {
     Optional<Subscription> findByIdWithUser(Long id);
 
     List<Subscription> findByActual(Long userId);
-
 
 
 }

@@ -30,30 +30,32 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
+    public Subscription findById(Long id) {
+        return subscriptionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Subscription not found ")); //todo own Exception
+    }
+
+    @Override
     public Subscription create(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
-        Subscription subscription = Subscription.builder().build();
-        subscriptionRepository.save(subscription);
-
-        return subscription;
+        Optional<User> user = userRepository.findById(userId);
+        Subscription subscription = new Subscription();
+        subscription.setUser(user.get());
+        //.user(user.get())
+        //.build();
+        return subscriptionRepository.save(subscription);
     }
 
 
     @Override
-    public Subscription getById(Long id) {
-        Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subscription not found"));//todo own Exception
-        return subscription;
+    public Optional<Subscription> getById(Long id) {
+        return subscriptionRepository.findById(id);
     }
 
     @Override
-    public Subscription setPaidStatus(Long id) {
-        Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subscription not found")); //todo own Exception
-        subscription.setStatus(Status.PAID);
-        subscriptionRepository.save(subscription);
-        return subscription;
+    public void setPaidStatus(Long id) {
+        Optional<Subscription> subscription = subscriptionRepository.findById(id);
+        subscription.get().setStatus(Status.PAID);
+        subscriptionRepository.save(subscription.get());
     }
 
     @Override
@@ -64,8 +66,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Set<Subscription> getByUserId(Long userId) {
-        Set<Subscription> byUserId = subscriptionRepository.findByUserId(userId);
-        return byUserId;
+
+        return subscriptionRepository.findByUserId(userId);
 
     }
 

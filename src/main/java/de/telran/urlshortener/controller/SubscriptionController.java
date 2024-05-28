@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -22,15 +23,16 @@ public class SubscriptionController {
     @PostMapping("/create/{userId}")
     public ResponseEntity<SubscriptionResponseDto> create(@PathVariable Long userId) {
         Subscription subscription = subscriptionService.create(userId);
-        SubscriptionResponseDto responseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        SubscriptionResponseDto subscriptionResponseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
+        return ResponseEntity.status(HttpStatus.OK).body(subscriptionResponseDto);
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionResponseDto> getById(@PathVariable Long id) {
-        Subscription subscription = subscriptionService.getById(id);
-        SubscriptionResponseDto subscriptionResponseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
-        return ResponseEntity.ok(subscriptionResponseDto);
+        Optional<Subscription> subscription = subscriptionService.getById(id);
+        SubscriptionResponseDto subscriptionResponseDto = subscriptionMapper.toSubscriptionResponseDto(subscription.get());
+        return ResponseEntity.status(HttpStatus.OK).body(subscriptionResponseDto);
     }
 
     @PutMapping("/{id}")
