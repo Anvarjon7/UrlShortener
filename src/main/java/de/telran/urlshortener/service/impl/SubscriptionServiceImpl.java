@@ -8,6 +8,7 @@ import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.SubscriptionRepository;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.SubscriptionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +17,12 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionMapper subscriptionMapper;
     private final UserRepository userRepository;
-
-    @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, SubscriptionMapper subscriptionMapper, UserRepository userRepository) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.subscriptionMapper = subscriptionMapper;
-        this.userRepository = userRepository;
-    }
 
     public List<Subscription> findByActualSubscriptions(Long userId) {
         return subscriptionRepository.findAllActualSubscriptions(userId);

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping(value = "/api/subscription")
+@RequestMapping(value = "/api/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
+
     private final SubscriptionService subscriptionService;
 
-
     @PostMapping("/create/{userId}")
-    public ResponseEntity<SubscriptionResponseDto> createSubscription(@PathVariable Long userId) {
+    public ResponseEntity<SubscriptionResponseDto> create(@PathVariable Long userId) {
         SubscriptionResponseDto subscriptionResponseDto = subscriptionService.create(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionResponseDto);
     }
@@ -28,14 +28,14 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscriptionResponseDto);
     }
 
-    @PutMapping("/{id}/paid")
+    @PutMapping("/{id}")
     public ResponseEntity setPaidStatus(@PathVariable Long id) {
         subscriptionService.setPaidStatus(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteSubscription(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable Long id) {
         subscriptionService.delete(id);
         return ResponseEntity.ok().build();
     }

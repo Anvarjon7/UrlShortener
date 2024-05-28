@@ -20,25 +20,25 @@ public class UrlBindingController {
     private final UrlBindingService urlBindingService;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UrlBindingResponseDto> create(@RequestBody @Valid UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         UrlBindingResponseDto urlBindingResponseDto = urlBindingService.createUrlBinding(urlBindingCreateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(urlBindingResponseDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity closeUrlBinding(@PathVariable Long id) {
+    public ResponseEntity close(@PathVariable Long id) {
         urlBindingService.closeUrlBinding(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUrlBinding(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable Long id) {
         urlBindingService.deleteUrlBinding(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/getbyuserid/{id}")
+    @GetMapping("/getByUserId/{id}")
     public ResponseEntity<Set<UrlBindingResponseDto>> getByUserId(@PathVariable Long id) {
         Set<UrlBindingResponseDto> urlBinding = urlBindingService.getByUserId(id);
         return ResponseEntity.ok(urlBinding);

@@ -17,7 +17,7 @@ public class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserStatisticsResponse> getStatistics(@PathVariable Long id) {
         UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(id);
         return ResponseEntity.ok(userStatistics);
