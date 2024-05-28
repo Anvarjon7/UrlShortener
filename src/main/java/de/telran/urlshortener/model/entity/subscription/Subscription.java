@@ -1,5 +1,6 @@
 package de.telran.urlshortener.model.entity.subscription;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import de.telran.urlshortener.model.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,5 +39,6 @@ public class Subscription {
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
+    @JsonBackReference
     private User user;
 }

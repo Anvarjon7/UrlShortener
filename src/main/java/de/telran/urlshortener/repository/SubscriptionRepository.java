@@ -12,7 +12,7 @@ import java.util.Set;
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
     @Query("SELECT s FROM Subscription s WHERE s.user.id = :userId AND s.expirationDate >= CURRENT_DATE")
-    List<Subscription> findAllActualSubscriptions(Long userId);
+    List<Subscription> findAllActual(Long userId);
 
     @EntityGraph(value = "Subscription.withUser", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT s FROM Subscription s WHERE s.id = :id")

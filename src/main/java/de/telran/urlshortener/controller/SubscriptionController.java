@@ -1,6 +1,8 @@
 package de.telran.urlshortener.controller;
 
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
+import de.telran.urlshortener.mapper.SubscriptionMapper;
+import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,22 +17,26 @@ import java.util.Set;
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
+    private final SubscriptionMapper subscriptionMapper;
 
     @PostMapping("/create/{userId}")
     public ResponseEntity<SubscriptionResponseDto> create(@PathVariable Long userId) {
-        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.create(userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionResponseDto);
+        Subscription subscription = subscriptionService.create(userId);
+        SubscriptionResponseDto responseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionResponseDto> getById(@PathVariable Long id) {
-        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.getById(id);
+        Subscription subscription = subscriptionService.getById(id);
+        SubscriptionResponseDto subscriptionResponseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
         return ResponseEntity.ok(subscriptionResponseDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity setPaidStatus(@PathVariable Long id) {
         subscriptionService.setPaidStatus(id);
+
         return ResponseEntity.ok().build();
     }
 
@@ -42,9 +48,12 @@ public class SubscriptionController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long userId) {
-        Set<SubscriptionResponseDto> subscriptions = subscriptionService.getByUserId(userId);
-        return ResponseEntity.ok(subscriptions);
+        Set<Subscription> subscriptions = subscriptionService.getByUserId(userId);
+        Set<SubscriptionResponseDto> subscriptionResponseDtos = subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
+
+        return ResponseEntity.ok(subscriptionResponseDtos);
     }
+
 }
 
 
