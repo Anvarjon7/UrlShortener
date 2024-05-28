@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-
 @RestController
-@RequestMapping(value = "/api/urlbinding")
+@RequestMapping(value = "/api/url-bindings")
 @RequiredArgsConstructor
 public class UrlBindingController {
 
     private final UrlBindingService urlBindingService;
 
 
-    @PostMapping("/create")
-    public ResponseEntity<UrlBindingResponseDto> createUrlBinding(@RequestBody @Valid UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
+    @PostMapping
+    public ResponseEntity<UrlBindingResponseDto> create(@RequestBody @Valid UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         UrlBindingResponseDto urlBindingResponseDto = urlBindingService.createUrlBinding(urlBindingCreateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(urlBindingResponseDto);
     }

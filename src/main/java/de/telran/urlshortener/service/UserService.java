@@ -26,4 +26,6 @@ public interface UserService {
     Optional<User> findByIdWithUrlBindingsAndSubscriptions(Long id);
 
     Optional<User> findByIdWithSubscriptions(Long id);
+
+    User findById(Long id);
 }

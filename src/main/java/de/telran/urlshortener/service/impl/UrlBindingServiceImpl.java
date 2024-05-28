@@ -10,25 +10,22 @@ import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UrlBindingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.telran.urlshortener.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UrlBindingServiceImpl implements UrlBindingService {
 
     private final UrlBindingRepository urlBindingRepository;
     private final UrlBindingMapper urlBindingMapper;
     private final UserRepository userRepository;
 
-    @Autowired
-    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository, UrlBindingMapper urlBindingMapper, UserRepository userRepository) {
-        this.urlBindingRepository = urlBindingRepository;
-        this.urlBindingMapper = urlBindingMapper;
-        this.userRepository = userRepository;
-    }
+    private final UserService userService;
 
     public Optional<UrlBinding> findActualByUid(String uid) {
         return urlBindingRepository.findActualByUid(uid);
@@ -37,8 +34,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBindingResponseDto createUrlBinding(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         Long userId = urlBindingCreateRequestDto.userId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
+        User user = userService.findById(userId);
         UrlBinding urlBinding = UrlBinding.builder()
                 .baseUrl("baseUrl")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
@@ -46,10 +42,11 @@ public class UrlBindingServiceImpl implements UrlBindingService {
                 .user(user)
                 .pathPrefix("pathPref")
                 .uid(NanoIdUtils.randomNanoId())
+                .count(0L)
                 .build();
 
         UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
-        user.addBinding(urlBinding);
+        //user.addBinding(urlBinding); // ???
         return urlBindingMapper.toUrlBindingResponseDto(saveUrlBinding);
     }
 

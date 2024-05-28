@@ -2,6 +2,7 @@ package de.telran.urlshortener.service.impl;
 
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
+import de.telran.urlshortener.exception.UserNotFoundException;
 import de.telran.urlshortener.mapper.UserMapper;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
@@ -30,6 +31,11 @@ public class UserServiceImpl implements UserService {
 
     public Optional<User> findByIdWithSubscriptions(Long id) {
         return userRepository.findByIdWithSubscriptions(id);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Not found with id " + id));
     }
 
     public Optional<User> findByIdWithBindings(Long id) {
@@ -80,6 +86,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getById(@PathVariable Long id) {
+        Optional<User> byUserId = userRepository.findById(id);
+
         UserResponseDto userResponseDto = null;
         if (id != null) {
             Optional<User> user = userRepository.findById(id);

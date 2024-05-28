@@ -38,7 +38,8 @@ public class UrlBinding {
     @Column(name = "uid", nullable = false, unique = true)
     @Getter @Setter
     private String uid;
-    private Long count;
+
+    private Long count = 0L;
 
     @Column(name = "created_at")
     @Builder.Default
