@@ -3,6 +3,8 @@ package de.telran.urlshortener.controller;
 
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.dto.UrlBindingResponseDto;
+import de.telran.urlshortener.mapper.UrlBindingMapper;
+import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.service.UrlBindingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,35 +20,46 @@ import java.util.Set;
 public class UrlBindingController {
 
     private final UrlBindingService urlBindingService;
-
+    private final UrlBindingMapper urlBindingMapper;
 
     @PostMapping("/create")
     public ResponseEntity<UrlBindingResponseDto> create(@RequestBody @Valid UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
-        UrlBindingResponseDto urlBindingResponseDto = urlBindingService.createUrlBinding(urlBindingCreateRequestDto);
+        UrlBinding urlBinding = urlBindingService.create(urlBindingCreateRequestDto);
+        UrlBindingResponseDto urlBindingResponseDto = urlBindingMapper.toUrlBindingResponseDto(urlBinding);
         return ResponseEntity.status(HttpStatus.CREATED).body(urlBindingResponseDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity close(@PathVariable Long id) {
-        urlBindingService.closeUrlBinding(id);
+        urlBindingService.close(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
-        urlBindingService.deleteUrlBinding(id);
+        urlBindingService.delete(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/getByUserId/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Set<UrlBindingResponseDto>> getByUserId(@PathVariable Long id) {
-        Set<UrlBindingResponseDto> urlBinding = urlBindingService.getByUserId(id);
-        return ResponseEntity.ok(urlBinding);
+        Set<UrlBinding> urlBindings = urlBindingService.getByUserId(id);
+        Set<UrlBindingResponseDto> urlBindingResponseDtos = urlBindingMapper.toUrlBindingResponseDtoSet(urlBindings);
+        return ResponseEntity.ok(urlBindingResponseDtos);
     }
 
-    @GetMapping("/{uid}")
+    @GetMapping("/uid/{uid}")
     public ResponseEntity<UrlBindingResponseDto> getByUid(@PathVariable String uid) {
-        UrlBindingResponseDto urlBindingResponseDto = urlBindingService.getByUid(uid);
+        UrlBinding urlBinding = urlBindingService.getByUid(uid);
+        UrlBindingResponseDto urlBindingResponseDto = urlBindingMapper.toUrlBindingResponseDto(urlBinding);
+        return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/shortUrl/{shortUrl}")
+    public ResponseEntity<UrlBindingResponseDto> getByShortUrl(@PathVariable String shortUrl) {
+        UrlBinding urlBinding = urlBindingService.getByShortUrl(shortUrl);
+        UrlBindingResponseDto urlBindingResponseDto = urlBindingMapper.toUrlBindingResponseDto(urlBinding);
+
         return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);
     }
 }

@@ -1,7 +1,6 @@
 package de.telran.urlshortener.repository;
 
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
-import de.telran.urlshortener.model.entity.subscription.Subscription;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +22,7 @@ public interface UrlBindingRepository extends JpaRepository<UrlBinding, Long> {
 
     Set<UrlBinding> findByUser_Id(Long userId);
 
+    @Query("select u from UrlBinding u where u.baseUrl || u.pathPrefix || u.uid = :shortUrl")
+    Optional<UrlBinding> findByShortUrl(String shortUrl);
 }
 

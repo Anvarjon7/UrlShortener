@@ -1,9 +1,7 @@
 package de.telran.urlshortener.mapper;
 
-import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.dto.UrlBindingResponseDto;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
-import de.telran.urlshortener.model.entity.subscription.Subscription;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -16,8 +14,7 @@ public class UrlBindingMapper {
         return new UrlBindingResponseDto(
                 urlBinding.getId(),
                 urlBinding.getOriginalUrl(),
-//                urlBinding.getBaseUrl(),
-                urlBinding.GetShort(),
+                urlBinding.getShort(),
                 urlBinding.getCount(),
                 urlBinding.getCreationDate(),
                 urlBinding.getExpirationDate()
