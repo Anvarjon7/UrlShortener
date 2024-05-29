@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,15 +33,18 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
+        final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
+        final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        final int DEFAULT_SIZE = 21;
         Long userId = urlBindingCreateRequestDto.userId();
         User user = userService.findById(userId);
         UrlBinding urlBinding = UrlBinding.builder()
-                .baseUrl("baseUrl")
+                .baseUrl("http://localhost:8090/")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
                 .expirationDate(urlBindingCreateRequestDto.expirationDate())
                 .user(user)
-                .pathPrefix("pathPref")
-                .uid(NanoIdUtils.randomNanoId())
+                .pathPrefix("")
+                .uid(NanoIdUtils.randomNanoId(DEFAULT_NUMBER_GENERATOR, DEFAULT_ALPHABET, 5))
                 .count(0L)
                 .build();
 

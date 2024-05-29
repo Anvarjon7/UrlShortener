@@ -1,8 +1,10 @@
 package de.telran.urlshortener.controller;
 
 import de.telran.urlshortener.dto.UrlBindingResponseDto;
+import de.telran.urlshortener.mapper.Mapper;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.service.UrlBindingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +15,17 @@ import java.net.URI;
 
 @RestController
 @RequestMapping
+@RequiredArgsConstructor
 //localhost:8080/url/dfsdfsfsdf
 public class UrlRedirectController {
-    UrlBindingService urlBindingService;
+    private final UrlBindingService urlBindingService;
+    private final Mapper<UrlBinding, UrlBindingResponseDto> mapper;
+
 
     @GetMapping("/{url}")
     public ResponseEntity goToUrl(@PathVariable String url) {
-        UrlBinding urlBinding = urlBindingService.getByShortUrl(url);
-        String orginalUrl = urlBinding.getOriginalUrl();
+        UrlBindingResponseDto urlBinding = mapper.toDto(urlBindingService.getByUid(url));
+        String orginalUrl = urlBinding.originalUrl();
         HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setLocation(URI.create("google.com"));
         httpHeaders.setLocation(URI.create(orginalUrl));

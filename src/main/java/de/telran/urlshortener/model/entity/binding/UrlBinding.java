@@ -26,7 +26,7 @@ public class UrlBinding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
     private Long id;
-    @Column(name = "original_url", nullable = false)
+    @Column(name = "original_url", nullable = false, length = 2048)
     @Getter @Setter
     private String originalUrl;
     @Column(name = "base_url", nullable = false)
