@@ -4,6 +4,8 @@ import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class SubscriptionMapper implements Mapper<Subscription, SubscriptionResponseDto> {
 
@@ -18,7 +20,17 @@ public class SubscriptionMapper implements Mapper<Subscription, SubscriptionResp
     }
 
     @Override
+    public Set<SubscriptionResponseDto> toDtoSet(Set<Subscription> subscriptions) {
+        return null;
+    }
+
+    @Override
     public Subscription toEntity(SubscriptionResponseDto subscriptionResponseDto) {
+        return null;
+    }
+
+    @Override
+    public Set<Subscription> toEntitySet(Set<SubscriptionResponseDto> subscriptionResponseDtos) {
         return null;
     }
 }
