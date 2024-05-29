@@ -3,7 +3,6 @@ package de.telran.urlshortener.service;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 
-import java.util.Optional;
 import java.util.Set;
 
 public interface UrlBindingService {
@@ -18,6 +17,9 @@ public interface UrlBindingService {
 
     void delete(Long bindingId);
 
-    UrlBinding getByShortUrl(String shorturl);
+    UrlBinding getByShortUrl(String shortUrl);
+
     UrlBinding findById(Long Id);
+
+    void incrementClickCount(String uid);
 }

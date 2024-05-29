@@ -8,8 +8,10 @@ import java.util.Set;
 
 public record FullUserResponseDto(
         UserResponseDto userResponseDto,
+
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Set<Subscription> subscriptions,
+
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Set<UrlBinding> bindings) {
 }

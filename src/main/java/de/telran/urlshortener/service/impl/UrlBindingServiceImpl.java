@@ -5,7 +5,6 @@ import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
-import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UrlBindingService;
 import de.telran.urlshortener.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -89,6 +88,15 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     public UrlBinding findById(Long id) {
 
         return urlBindingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
+    }
+
+    @Override
+    public void incrementClickCount(String uid) {
+        UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
+                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + uid));
+
+        urlBinding.setCount(urlBinding.getCount() + 1);
+        urlBindingRepository.save(urlBinding);
     }
 }
 

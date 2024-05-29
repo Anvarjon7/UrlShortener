@@ -10,6 +10,7 @@ public record SubscriptionResponseDto(
         Long id,
         LocalDate creationDate,
         LocalDate expirationDate,
+
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Status status
 ) {

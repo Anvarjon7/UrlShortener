@@ -25,10 +25,10 @@ public class UrlRedirectController {
     @GetMapping("/{url}")
     public ResponseEntity goToUrl(@PathVariable String url) {
         UrlBindingResponseDto urlBinding = mapper.toDto(urlBindingService.getByUid(url));
-        String originalUrl = urlBinding.originalUrl();
+        String orginalUrl = urlBinding.originalUrl();
         HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setLocation(URI.create("google.com"));
-        httpHeaders.setLocation(URI.create(originalUrl));
+        httpHeaders.setLocation(URI.create(orginalUrl));
         return new ResponseEntity(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
         //go to db , find by url original url
 //        String original = "";
