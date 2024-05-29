@@ -34,7 +34,6 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
         final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        final int DEFAULT_SIZE = 21;
         Long userId = urlBindingCreateRequestDto.userId();
         User user = userService.findById(userId);
         UrlBinding urlBinding = UrlBinding.builder()
@@ -92,7 +91,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public void incrementClickCount(String uid) {
-        UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
+        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(uid)
                 .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + uid));
 
         urlBinding.setCount(urlBinding.getCount() + 1);
