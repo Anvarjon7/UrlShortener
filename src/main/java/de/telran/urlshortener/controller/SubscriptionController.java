@@ -1,6 +1,7 @@
 package de.telran.urlshortener.controller;
 
 import de.telran.urlshortener.dto.SubscriptionResponseDto;
+import de.telran.urlshortener.mapper.Mapper;
 import de.telran.urlshortener.mapper.SubscriptionMapper;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.service.SubscriptionService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/subscriptions")
@@ -19,11 +21,15 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final SubscriptionMapper subscriptionMapper;
 
+    private final Mapper<Subscription, SubscriptionResponseDto> mapper;
+
     @PostMapping("/create/{userId}")
     public ResponseEntity<SubscriptionResponseDto> create(@PathVariable Long userId) {
-        Subscription subscription = subscriptionService.create(userId);
-        SubscriptionResponseDto responseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(mapper.toDto(subscriptionService.create(userId)));
+//        Subscription subscription = subscriptionService.create(userId);
+//        SubscriptionResponseDto responseDto = subscriptionMapper.toSubscriptionResponseDto(subscription);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("/{id}")
@@ -47,9 +53,12 @@ public class SubscriptionController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<Set<SubscriptionResponseDto>> getByUserId(@PathVariable Long userId) {
-        Set<Subscription> subscriptions = subscriptionService.getByUserId(userId);
-        Set<SubscriptionResponseDto> subscriptionResponseDtos = subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
-        return ResponseEntity.ok(subscriptionResponseDtos);
+        return ResponseEntity.ok( subscriptionService.getByUserId(userId)
+                .stream().map(mapper::toDto)
+                .collect(Collectors.toSet()));
+//        Set<Subscription> subscriptions = subscriptionService.getByUserId(userId);
+//        Set<SubscriptionResponseDto> subscriptionResponseDtos = subscriptionMapper.toSubscriptionResponseDtoSet(subscriptions);
+//        return ResponseEntity.ok(collect);
     }
 
 }

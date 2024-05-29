@@ -22,7 +22,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class UrlBindingServiceImpl implements UrlBindingService {
 
     private final UrlBindingRepository urlBindingRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     private final UserService userService;
 

@@ -1,5 +1,7 @@
 package de.telran.urlshortener.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.telran.urlshortener.model.entity.user.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ public class UserRequestDto {
 
     @NotBlank(message = "Invalid lastName : Empty lastName")
     @Size(max = 300)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
 
     @NotBlank
