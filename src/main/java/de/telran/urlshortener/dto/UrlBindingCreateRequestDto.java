@@ -11,6 +11,7 @@ public record UrlBindingCreateRequestDto(
         String originalUrl,
         @NotNull @Positive
         Long userId,
+        String pathPrefix,
         @FutureOrPresent
         LocalDate expirationDate
 ) {

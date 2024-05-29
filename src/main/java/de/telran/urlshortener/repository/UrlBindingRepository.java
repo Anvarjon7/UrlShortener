@@ -22,7 +22,8 @@ public interface UrlBindingRepository extends JpaRepository<UrlBinding, Long> {
 
     Set<UrlBinding> findByUser_Id(Long userId);
 
-    @Query("select u from UrlBinding u where u.baseUrl || u.pathPrefix || u.uid = :shortUrl")
+//    @Query("select u from UrlBinding u where u.baseUrl || u.pathPrefix || u.uid = :shortUrl")
+    @Query("select u from UrlBinding u where u.pathPrefix || u.uid = :shortUrl")
     Optional<UrlBinding> findByShortUrl(String shortUrl);
 }
 

@@ -42,7 +42,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
                 .expirationDate(urlBindingCreateRequestDto.expirationDate())
                 .user(user)
-                .pathPrefix("")
+                .pathPrefix(urlBindingCreateRequestDto.pathPrefix())
                 .uid(NanoIdUtils.randomNanoId(DEFAULT_NUMBER_GENERATOR, DEFAULT_ALPHABET, 5))
                 .count(0L)
                 .build();
