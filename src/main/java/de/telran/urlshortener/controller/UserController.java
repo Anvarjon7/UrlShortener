@@ -5,7 +5,6 @@ import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.mapper.UserMapper;
-import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,22 +22,19 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
+    private final UserMapper mapper;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
-        User user = userService.register(userRequestDto);
-        UserResponseDto userResponseDto = userMapper.toUserResponseDto(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(mapper.toDto(userService.register(userRequestDto)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
-        User user = userService.update(id, userRequestDto);
-        UserResponseDto updatedUser = userMapper.toUserResponseDto(user);
 
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));
     }
 
     @DeleteMapping("/{id}")
@@ -50,27 +45,20 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<FullUserResponseDto>> getAll() {
-        List<User> users = userService.getAll();
-        List<FullUserResponseDto> usersResponse = users.stream()
-                .map(userMapper::toFullUserResponseDto)
-                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(usersResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAll().stream().map(mapper::toFullUserResponseDto)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getById(@PathVariable Long id) {
-        Optional<User> userId = userService.getById(id);
-        UserResponseDto userResponseDto = userMapper.toUserResponseDto(userId.get());
 
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getById(id).get()));
     }
 
     @GetMapping("/{email}")
     public ResponseEntity<UserResponseDto> getByEmail(@Email @PathVariable String email) {
-        User byEmail = userService.getByEmail(email);
-        UserResponseDto userResponseDto = userMapper.toUserResponseDto(byEmail);
 
-        return ResponseEntity.ok(userResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getByEmail(email)));
     }
 }

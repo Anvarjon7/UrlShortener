@@ -12,5 +12,4 @@ public record FullUserResponseDto(
         Set<Subscription> subscriptions,
         @JsonInclude(JsonInclude.Include.NON_NULL)
         Set<UrlBinding> bindings) {
-
 }

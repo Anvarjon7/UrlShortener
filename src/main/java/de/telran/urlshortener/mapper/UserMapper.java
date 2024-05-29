@@ -5,30 +5,41 @@ import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.model.entity.user.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
-public class UserMapper {
-    public FullUserResponseDto toFullUserResponseDto(User user) {
-        return new FullUserResponseDto(
-                new UserResponseDto(
-                        user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail()),
-                user.getSubscriptions(),
-                user.getBindings()
-        );
+public class UserMapper implements Mapper<User, UserResponseDto> {
+
+    @Override
+    public Set<UserResponseDto> toDtoSet(Set<User> users) {
+        return Set.of();
     }
 
+    @Override
+    public Set<User> toEntitySet(Set<UserResponseDto> userResponseDtos) {
+        return Set.of();
+    }
 
-    public UserResponseDto toUserResponseDto(User user) {
+    @Override
+    public UserResponseDto toDto(User user) {
         return new UserResponseDto(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getEmail())
-
-
-                ;
+                user.getEmail()
+        );
     }
 
+    @Override
+    public User toEntity(UserResponseDto userResponseDto) {
+        return null;
+    }
+
+    public FullUserResponseDto toFullUserResponseDto(User user) {
+        return new FullUserResponseDto(
+                toDto(user),
+                user.getSubscriptions(),
+                user.getBindings()
+        );
+    }
 }
