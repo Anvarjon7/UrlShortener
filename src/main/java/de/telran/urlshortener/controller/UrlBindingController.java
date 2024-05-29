@@ -23,14 +23,13 @@ import java.util.Set;
 public class UrlBindingController {
 
     private final UrlBindingService urlBindingService;
-        private final Mapper<UrlBinding,UrlBindingResponseDto> mapper;
+    private final Mapper<UrlBinding, UrlBindingResponseDto> mapper;
 
 
     @PostMapping("/create")
     public ResponseEntity<UrlBindingResponseDto> create(@RequestBody @Valid UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
-        UrlBinding urlBinding = urlBindingService.create(urlBindingCreateRequestDto);
-        UrlBindingResponseDto urlBindingResponseDto =  mapper.toDto(urlBinding);
-        return ResponseEntity.status(HttpStatus.CREATED).body(urlBindingResponseDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(mapper.toDto(urlBindingService.create(urlBindingCreateRequestDto)));
     }
 
     @PutMapping("/{id}")
@@ -47,23 +46,18 @@ public class UrlBindingController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Set<UrlBindingResponseDto>> getByUserId(@PathVariable Long id) {
-        Set<UrlBinding> urlBindings = urlBindingService.getByUserId(id);
-        Set<UrlBindingResponseDto> urlBindingResponseDtos = mapper.toDtoSet(urlBindings);//urlBindingMapper.toUrlBindingResponseDtoSet(urlBindings);
-        return ResponseEntity.ok(urlBindingResponseDtos);
+        return ResponseEntity.ok(mapper.toDtoSet(urlBindingService.getByUserId(id)));
     }
 
     @GetMapping("/uid/{uid}")
     public ResponseEntity<UrlBindingResponseDto> getByUid(@PathVariable String uid) {
-        UrlBinding urlBinding = urlBindingService.getByUid(uid);
-        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBinding);
+        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBindingService.getByUid(uid));
         return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/shortUrl/{shortUrl}")
     public ResponseEntity<UrlBindingResponseDto> getByShortUrl(@PathVariable String shortUrl) {
-        UrlBinding urlBinding = urlBindingService.getByShortUrl(shortUrl);
-        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBinding);
-
+        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBindingService.getByShortUrl(shortUrl));
         return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);
     }
 }
