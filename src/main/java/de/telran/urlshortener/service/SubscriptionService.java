@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface SubscriptionService {
-
+    Subscription findById(Long id);
 
     Subscription create(Long userId);
 
@@ -22,7 +22,6 @@ public interface SubscriptionService {
     Optional<Subscription> findByIdWithUser(Long id);
 
     List<Subscription> findByActual(Long userId);
-
 
 
 }

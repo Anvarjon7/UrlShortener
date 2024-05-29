@@ -1,7 +1,7 @@
 package de.telran.urlshortener.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.telran.urlshortener.model.entity.subscription.Status;
-import de.telran.urlshortener.model.entity.user.User;
 
 import java.time.LocalDate;
 
@@ -10,6 +10,7 @@ public record SubscriptionResponseDto(
         Long id,
         LocalDate creationDate,
         LocalDate expirationDate,
-        Status status,
-        User user) {
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        Status status
+) {
 }
