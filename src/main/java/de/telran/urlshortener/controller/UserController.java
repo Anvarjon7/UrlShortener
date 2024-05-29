@@ -50,7 +50,7 @@ public class UserController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<UserResponseDto> getById(@PathVariable Long id) {
 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getById(id).get()));
