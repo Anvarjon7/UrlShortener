@@ -2,6 +2,7 @@ package de.telran.urlshortener.service.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
+import de.telran.urlshortener.exception.UrlNotFoundException;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor
@@ -46,8 +45,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
                 .count(0L)
                 .build();
 
-        UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
-        return saveUrlBinding;
+        return urlBindingRepository.save(urlBinding);
     }
 
     @Override
@@ -59,15 +57,13 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBinding getByUid(String uid) {
-        UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
+        return urlBindingRepository.findByUid(uid)
                 .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
-        return urlBinding;
     }
 
     @Override
     public Set<UrlBinding> getByUserId(Long userId) {
-        Set<UrlBinding> urlBindings = urlBindingRepository.findByUser_Id(userId);
-        return urlBindings;
+        return urlBindingRepository.findByUser_Id(userId);
     }
 
     @Override
@@ -77,10 +73,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBinding getByShortUrl(String shortUrl) {
-        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(shortUrl)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
 
-        return urlBinding;
+        return urlBindingRepository.findByShortUrl(shortUrl)
+                .orElseThrow(() -> new UrlNotFoundException("Not found url with such" + shortUrl));
     }
 
     @Override
@@ -90,9 +85,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     }
 
     @Override
-    public void incrementClickCount(String uid) {
-        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(uid)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + uid));
+    public void incrementClickCount(String url) {
+        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(url)
+                .orElseThrow(() -> new UrlNotFoundException("Not found url with " + url));
 
         urlBinding.setCount(urlBinding.getCount() + 1);
         urlBindingRepository.save(urlBinding);

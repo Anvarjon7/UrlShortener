@@ -30,7 +30,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
 
-    @Override
     public Subscription findById(Long id) {
         return subscriptionRepository.findById(id)
                 .orElseThrow(() -> new SubscriptionNotFoundException("Not found subscription with " + id));
@@ -46,10 +45,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription getById(Long id) {
-        Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found subscription with " + id));
-        return subscription;
+    public Optional<Subscription> getById(Long id) {
+
+        return subscriptionRepository.findById(id);
     }
 
     @Override
@@ -68,8 +66,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Set<Subscription> getByUserId(Long userId) {
-        Set<Subscription> byUserId = subscriptionRepository.findByUserId(userId);
-        return byUserId;
+        return subscriptionRepository.findByUserId(userId);
 
     }
 }

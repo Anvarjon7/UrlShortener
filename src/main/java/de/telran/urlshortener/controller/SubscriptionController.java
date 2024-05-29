@@ -29,7 +29,7 @@ public class SubscriptionController {
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionResponseDto> getById(@PathVariable Long id) {
 
-        return ResponseEntity.ok(mapper.toDto(subscriptionService.getById(id)));
+        return ResponseEntity.ok(mapper.toDto(subscriptionService.getById(id).get()));
     }
 
     @PutMapping("/{id}")

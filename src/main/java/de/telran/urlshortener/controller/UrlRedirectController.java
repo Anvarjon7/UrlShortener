@@ -24,13 +24,15 @@ public class UrlRedirectController {
 
     @GetMapping("/{url}")
     public ResponseEntity goToUrl(@PathVariable String url) {
+
         urlBindingService.incrementClickCount(url);
         UrlBindingResponseDto urlBinding = mapper.toDto(urlBindingService.getByShortUrl(url));
         String originalUrl = urlBinding.originalUrl();
         HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(URI.create("google.com"));
         httpHeaders.setLocation(URI.create(originalUrl));
+
         return new ResponseEntity(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
+//        httpHeaders.setLocation(URI.create("google.com"));
         //go to db , find by url original url
 //        String original = "";
 //        return new RedirectView(original);

@@ -8,11 +8,9 @@ import java.util.Set;
 
 public interface SubscriptionService {
 
-    Subscription findById(Long id);
-
     Subscription create(Long userId);
 
-    Subscription getById(Long id);
+    Optional<Subscription> getById(Long id);
 
     Subscription setPaidStatus(Long id);
 
