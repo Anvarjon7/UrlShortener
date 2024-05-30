@@ -44,6 +44,7 @@ public class User {
     @Column(name = "email",nullable = false,unique = true)
     private String email;
 
+
     @Column(name = "password")
     private String password;
 
@@ -51,6 +52,7 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+//    private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Subscription> subscriptions;
