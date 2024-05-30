@@ -7,22 +7,25 @@ import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
+//    @Autowired
+//    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+//        this.userRepository = userRepository;
+//    }
 
     public Optional<User> findByIdWithSubscriptions(Long id) {
         return userRepository.findByIdWithSubscriptions(id);
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 .firstName(userRequestDto.getFirstName())
                 .lastName(userRequestDto.getLastName())
                 .email(userRequestDto.getEmail())
-                .password(userRequestDto.getPassword())
+                .password(passwordEncoder.encode(userRequestDto.getPassword()))
                 .role(userRequestDto.getRole())
                 .build();
         User savedUser = userRepository.save(user);
@@ -63,7 +66,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setFirstName(userRequestDto.getFirstName());
         existingUser.setLastName(userRequestDto.getLastName());
         existingUser.setEmail(userRequestDto.getEmail());
-        existingUser.setPassword(userRequestDto.getPassword());
+        existingUser.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         existingUser.setRole(userRequestDto.getRole());
         User savedUser = userRepository.save(existingUser);
         return savedUser;

@@ -56,7 +56,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getById(id).get()));
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/ByEmail/{email}")
     public ResponseEntity<UserResponseDto> getByEmail(@Email @PathVariable String email) {
 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getByEmail(email)));
