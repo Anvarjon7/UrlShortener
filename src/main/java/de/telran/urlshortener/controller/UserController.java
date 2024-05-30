@@ -5,9 +5,11 @@ import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.mapper.UserMapper;
+import de.telran.urlshortener.security.AuthenticationService;
+import de.telran.urlshortener.security.model.SignInRequest;
+import de.telran.urlshortener.security.model.JwtAuthenticationResponse;
 import de.telran.urlshortener.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper mapper;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
@@ -56,9 +59,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getById(id).get()));
     }
 
-    @GetMapping("/ByEmail/{email}")
-    public ResponseEntity<UserResponseDto> getByEmail(@Email @PathVariable String email) {
+    @GetMapping("/{email}")
+    public ResponseEntity<UserResponseDto> getByEmail(@PathVariable String email) {
 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getByEmail(email)));
+    }
+
+    @PostMapping("/login")
+    public JwtAuthenticationResponse login(@RequestBody SignInRequest request) {
+        return authenticationService.authenticate(request);
     }
 }
