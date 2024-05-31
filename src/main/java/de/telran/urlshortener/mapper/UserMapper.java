@@ -2,14 +2,20 @@ package de.telran.urlshortener.mapper;
 
 import de.telran.urlshortener.dto.FullUserResponseDto;
 import de.telran.urlshortener.dto.UserResponseDto;
+import de.telran.urlshortener.model.entity.binding.UrlBinding;
+import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.model.entity.user.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper implements Mapper<User, UserResponseDto> {
 
+    private final SubscriptionMapper subscriptionMapper;
+    private final UrlBindingMapper urlBindingMapper;
     @Override
     public Set<UserResponseDto> toDtoSet(Set<User> users) {
         return Set.of();
@@ -36,10 +42,11 @@ public class UserMapper implements Mapper<User, UserResponseDto> {
     }
 
     public FullUserResponseDto toFullUserResponseDto(User user) {
+
         return new FullUserResponseDto(
                 toDto(user),
-                user.getSubscriptions(),
-                user.getBindings()
+                subscriptionMapper.toDtoSet(user.getSubscriptions()),
+                urlBindingMapper.toDtoSet(user.getBindings())
         );
     }
 }

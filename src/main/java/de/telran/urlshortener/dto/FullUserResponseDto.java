@@ -10,8 +10,10 @@ public record FullUserResponseDto(
         UserResponseDto userResponseDto,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        Set<Subscription> subscriptions,
+        Set<SubscriptionResponseDto> subscriptionResponseDtoSet,
+//        Set<Subscription> subscriptions,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        Set<UrlBinding> bindings) {
+        Set<UrlBindingResponseDto> bindingResponseDtoSet) {
+//        Set<UrlBinding> bindings) {
 }

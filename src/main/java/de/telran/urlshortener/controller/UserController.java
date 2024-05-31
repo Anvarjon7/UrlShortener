@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,19 +27,23 @@ public class UserController {
     private final UserService userService;
     private final UserMapper mapper;
     private final AuthenticationService authenticationService;
-
+    private final PasswordEncoder passwordEncoder;
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto) {
 //    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
 
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .body(mapper.toDto(userService.register(userRequestDto)));
+        userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.toDto(userService.register(userRequestDto)));
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
 //    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
-
+        userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));
     }
 
