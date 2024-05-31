@@ -1,9 +1,6 @@
 package de.telran.urlshortener.configuration;
 
-//import com.telran.org.security.JwtAuthenticationFilter;
-//import codezilla.handynestproject.security.JwtAuthenticationFilter;
 import de.telran.urlshortener.security.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,17 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.security.PublicKey;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
-    private JwtAuthenticationFilter authenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter authenticationFilter) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
@@ -38,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/register/").permitAll()
                         .requestMatchers("/api/users/register/*").permitAll()
                         .requestMatchers("/api/users/id/*").permitAll()
-                        .requestMatchers("/api/users/*").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
@@ -49,12 +42,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 }

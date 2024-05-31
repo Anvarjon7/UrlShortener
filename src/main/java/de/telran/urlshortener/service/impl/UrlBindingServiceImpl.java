@@ -22,8 +22,6 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class UrlBindingServiceImpl implements UrlBindingService {
 
     private final UrlBindingRepository urlBindingRepository;
-    //private final UserRepository userRepository;
-
     private final UserService userService;
 
     public Optional<UrlBinding> findActualByUid(String uid) {
@@ -46,8 +44,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
                 .count(0L)
                 .build();
 
-        UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
-        return saveUrlBinding;
+        return urlBindingRepository.save(urlBinding);
     }
 
     @Override
@@ -59,15 +56,13 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBinding getByUid(String uid) {
-        UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
+        return urlBindingRepository.findByUid(uid)
                 .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
-        return urlBinding;
     }
 
     @Override
     public Set<UrlBinding> getByUserId(Long userId) {
-        Set<UrlBinding> urlBindings = urlBindingRepository.findByUser_Id(userId);
-        return urlBindings;
+        return urlBindingRepository.findByUser_Id(userId);
     }
 
     @Override
@@ -77,10 +72,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBinding getByShortUrl(String shortUrl) {
-        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(shortUrl)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
 
-        return urlBinding;
+        return urlBindingRepository.findByShortUrl(shortUrl)
+                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
     }
 
     @Override
