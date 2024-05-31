@@ -28,14 +28,16 @@ public class UserController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto) {
+//    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.toDto(userService.register(userRequestDto)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
+//    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));
     }
@@ -53,7 +55,7 @@ public class UserController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<UserResponseDto> getById(@PathVariable Long id) {
 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getById(id).get()));
