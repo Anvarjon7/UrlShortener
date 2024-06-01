@@ -30,7 +30,8 @@ public class UrlRedirectController {
         HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setLocation(URI.create("google.com"));
         httpHeaders.setLocation(URI.create(originalUrl));
-        return new ResponseEntity(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
+        return new ResponseEntity(httpHeaders, HttpStatus.MOVED_TEMPORARILY);
+//        return new ResponseEntity(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
         //go to db , find by url original url
 //        String original = "";
 //        return new RedirectView(original);

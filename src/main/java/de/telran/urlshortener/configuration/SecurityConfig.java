@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/id/*").permitAll()
                         .requestMatchers("/api/users/*").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
+//                        .requestMatchers("/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**").permitAll() // разрешаем доступ к ресурсам Swagger
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
