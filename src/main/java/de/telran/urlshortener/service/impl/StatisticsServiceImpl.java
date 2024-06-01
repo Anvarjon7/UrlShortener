@@ -8,33 +8,27 @@ import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.StatisticsRepository;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.StatisticsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.telran.urlshortener.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final StatisticsRepository statisticsRepository;
 
-    @Autowired
-    public StatisticsServiceImpl(UserRepository userRepository, StatisticsRepository statisticsRepository) {
-        this.userRepository = userRepository;
-        this.statisticsRepository = statisticsRepository;
-    }
+    private final UserService userService;
 
 
     @Override
     public UserStatisticsResponse getUserStatistics(Long userId) {
-        User user = userRepository.findByIdWithBindings(userId).orElseThrow(
-                () -> new RuntimeException("Can not find user with id = " + userId) //todo заменить на свой Exception
-        );
-
-        return new UserStatisticsResponse(user.getId(), user.getBindings().stream()
+        return new UserStatisticsResponse(userId, userService.findById(userId).getBindings().stream()
                 .collect(Collectors.toMap(UrlBinding::getId, UrlBinding::getCount)));
     }
 

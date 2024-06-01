@@ -2,81 +2,99 @@ package de.telran.urlshortener.service.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
-import de.telran.urlshortener.dto.UrlBindingResponseDto;
-import de.telran.urlshortener.dto.UserResponseDto;
-import de.telran.urlshortener.mapper.UrlBindingMapper;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
-import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UrlBindingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.telran.urlshortener.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
+@RequiredArgsConstructor
 public class UrlBindingServiceImpl implements UrlBindingService {
 
     private final UrlBindingRepository urlBindingRepository;
-    private final UrlBindingMapper urlBindingMapper;
-    private final UserRepository userRepository;
 
-    @Autowired
-    public UrlBindingServiceImpl(UrlBindingRepository urlBindingRepository, UrlBindingMapper urlBindingMapper, UserRepository userRepository) {
-        this.urlBindingRepository = urlBindingRepository;
-        this.urlBindingMapper = urlBindingMapper;
-        this.userRepository = userRepository;
-    }
+    private final UserService userService;
 
     public Optional<UrlBinding> findActualByUid(String uid) {
         return urlBindingRepository.findActualByUid(uid);
     }
 
     @Override
-    public UrlBindingResponseDto createUrlBinding(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
+    public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
+        final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
+        final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         Long userId = urlBindingCreateRequestDto.userId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found")); //todo own Exception
+        User user = userService.findById(userId);
         UrlBinding urlBinding = UrlBinding.builder()
-                .baseUrl("baseUrl")
+                .baseUrl("http://localhost:8090/")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
                 .expirationDate(urlBindingCreateRequestDto.expirationDate())
                 .user(user)
-                .pathPrefix("pathPref")
-                .uid(NanoIdUtils.randomNanoId())
+                .pathPrefix(urlBindingCreateRequestDto.pathPrefix())
+                .uid(NanoIdUtils.randomNanoId(DEFAULT_NUMBER_GENERATOR, DEFAULT_ALPHABET, 5))
+                .count(0L)
                 .build();
 
         UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
-        user.addBinding(urlBinding);
-        return urlBindingMapper.toUrlBindingResponseDto(saveUrlBinding);
+        return saveUrlBinding;
     }
 
     @Override
-    public void closeUrlBinding(Long bindingId) {
-        UrlBinding urlBinding = urlBindingRepository.findById(bindingId)
-                .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
+    public void close(Long bindingId) {
+        UrlBinding urlBinding = urlBindingRepository.findById(bindingId).get();
         urlBinding.setIsClosed(true);
-        UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
+        urlBindingRepository.save(urlBinding);
     }
 
     @Override
-    public UrlBindingResponseDto getByUid(String uid) {
+    public UrlBinding getByUid(String uid) {
         UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
                 .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
-        return urlBindingMapper.toUrlBindingResponseDto(urlBinding);
+        return urlBinding;
     }
 
     @Override
-    public Set<UrlBindingResponseDto> getByUserId(Long userId) {
+    public Set<UrlBinding> getByUserId(Long userId) {
         Set<UrlBinding> urlBindings = urlBindingRepository.findByUser_Id(userId);
-        return urlBindingMapper.toUrlBindingResponseDtoSet(urlBindings);
+        return urlBindings;
     }
 
     @Override
-    public void deleteUrlBinding(Long bindingId) {
+    public void delete(Long bindingId) {
         urlBindingRepository.deleteById(bindingId);
+    }
+
+    @Override
+    public UrlBinding getByShortUrl(String shortUrl) {
+        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(shortUrl)
+                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
+
+        return urlBinding;
+    }
+
+    @Override
+    public UrlBinding findById(Long id) {
+
+        return urlBindingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
+    }
+
+    @Override
+    public void incrementClickCount(String uid) {
+        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(uid)
+                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + uid));
+
+        urlBinding.setCount(urlBinding.getCount() + 1);
+        urlBindingRepository.save(urlBinding);
     }
 }
 

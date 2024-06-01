@@ -2,9 +2,12 @@ package de.telran.urlshortener.repository;
 
 import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.TopRecord;
+import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Tuple;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,5 +37,4 @@ public class StatisticsRepository {
 
         return new TopBindingStatisticsResponse(topRecords);
     }
-
 }

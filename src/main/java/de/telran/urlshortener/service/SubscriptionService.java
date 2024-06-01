@@ -1,6 +1,5 @@
 package de.telran.urlshortener.service;
 
-import de.telran.urlshortener.dto.SubscriptionResponseDto;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 
 import java.util.List;
@@ -9,21 +8,21 @@ import java.util.Set;
 
 public interface SubscriptionService {
 
+    Subscription findById(Long id);
 
-    SubscriptionResponseDto create(Long userId);
+    Subscription create(Long userId);
 
-    SubscriptionResponseDto getById(Long id);
+    Subscription getById(Long id);
 
-    SubscriptionResponseDto setPaidStatus(Long id);
+    Subscription setPaidStatus(Long id);
 
     void delete(Long id);
 
-    Set<SubscriptionResponseDto> getByUserId(Long userId);
+    Set<Subscription> getByUserId(Long userId);
 
     Optional<Subscription> findByIdWithUser(Long id);
 
-    List<Subscription> findByActualSubscriptions(Long userId);
-
+    List<Subscription> findByActual(Long userId);
 
 
 }

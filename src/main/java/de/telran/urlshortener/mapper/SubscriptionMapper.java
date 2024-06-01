@@ -5,23 +5,32 @@ import de.telran.urlshortener.model.entity.subscription.Subscription;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
-public class SubscriptionMapper {
+public class SubscriptionMapper implements Mapper<Subscription, SubscriptionResponseDto> {
 
-    public SubscriptionResponseDto toSubscriptionResponseDto(Subscription subscription) {
+    @Override
+    public SubscriptionResponseDto toDto(Subscription subscription) {
         return new SubscriptionResponseDto(
                 subscription.getId(),
                 subscription.getCreationDate(),
                 subscription.getExpirationDate(),
-                subscription.getStatus(),
-                subscription.getUser()
+                subscription.getStatus()
         );
     }
-    public Set<SubscriptionResponseDto> toSubscriptionResponseDtoSet(Set<Subscription> subscriptions){
-        return subscriptions.stream()
-                .map(this::toSubscriptionResponseDto)
-                .collect(Collectors.toSet());
+
+    @Override
+    public Set<SubscriptionResponseDto> toDtoSet(Set<Subscription> subscriptions) {
+        return null;
+    }
+
+    @Override
+    public Subscription toEntity(SubscriptionResponseDto subscriptionResponseDto) {
+        return null;
+    }
+
+    @Override
+    public Set<Subscription> toEntitySet(Set<SubscriptionResponseDto> subscriptionResponseDtos) {
+        return null;
     }
 }

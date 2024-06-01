@@ -3,10 +3,12 @@ package de.telran.urlshortener.controller;
 import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.UserStatisticsResponse;
 import de.telran.urlshortener.service.StatisticsService;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -17,14 +19,14 @@ public class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<UserStatisticsResponse> getStatistics(@PathVariable Long id) {
-        UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(id);
+    @GetMapping("/getStatistics/{userId}")
+    public ResponseEntity<UserStatisticsResponse> getStatistics(@PathVariable Long userId) {
+        UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(userId);
         return ResponseEntity.ok(userStatistics);
     }
 
-    @GetMapping("/top")
-    public ResponseEntity<TopBindingStatisticsResponse> getTopStatistics(@RequestParam @Min(5  ) int top) {
+    @GetMapping("/top/{top}")
+    public ResponseEntity<TopBindingStatisticsResponse> getTopStatistics(@PathVariable int top) {
         TopBindingStatisticsResponse topBindingStatistics = statisticsService.getBindingTop(top);
         return ResponseEntity.ok(topBindingStatistics);
     }

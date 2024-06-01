@@ -26,7 +26,7 @@ public class UrlBinding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
     private Long id;
-    @Column(name = "original_url", nullable = false)
+    @Column(name = "original_url", nullable = false, length = 2048)
     @Getter @Setter
     private String originalUrl;
     @Column(name = "base_url", nullable = false)
@@ -38,7 +38,8 @@ public class UrlBinding {
     @Column(name = "uid", nullable = false, unique = true)
     @Getter @Setter
     private String uid;
-    private Long count;
+
+    private Long count = 0L;
 
     @Column(name = "created_at")
     @Builder.Default
@@ -56,7 +57,7 @@ public class UrlBinding {
     @Getter @Setter
     private User user;
 
-    public String GetShort(){
+    public String getShort(){
         return this.getBaseUrl()+this.getPathPrefix()+this.getUid();
     }
 }

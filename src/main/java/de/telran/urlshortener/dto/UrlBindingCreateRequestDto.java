@@ -7,10 +7,11 @@ import java.time.LocalDate;
 
 public record UrlBindingCreateRequestDto(
         @NotBlank
-        @URL
+//        @URL
         String originalUrl,
         @NotNull @Positive
         Long userId,
+        String pathPrefix,
         @FutureOrPresent
         LocalDate expirationDate
 ) {
