@@ -6,8 +6,8 @@ import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.mapper.UserMapper;
 import de.telran.urlshortener.security.AuthenticationService;
-import de.telran.urlshortener.security.model.SignInRequest;
 import de.telran.urlshortener.security.model.JwtAuthenticationResponse;
+import de.telran.urlshortener.security.model.SignInRequest;
 import de.telran.urlshortener.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,10 @@ public class UserController {
     private final UserMapper mapper;
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
+
     @PostMapping("/register")
-//    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto) {
     public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
 
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(mapper.toDto(userService.register(userRequestDto)));
         userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.toDto(userService.register(userRequestDto)));
@@ -41,7 +39,6 @@ public class UserController {
 
 
     @PutMapping("/{id}")
-//    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
         userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));

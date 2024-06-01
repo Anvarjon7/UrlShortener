@@ -19,6 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private JwtService jwtService;
+
     @Override
     public JwtAuthenticationResponse authenticate(SignInRequest request) {
         authenticationManager.authenticate(
