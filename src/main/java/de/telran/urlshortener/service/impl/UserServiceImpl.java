@@ -7,6 +7,9 @@ import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -26,6 +29,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Not found with id " + id));
+    }
+
+    @Override
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.isAuthenticated()) {
+            throw new SecurityException("User is not authenticated");
+        }
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                return getByEmail(userDetails.getUsername()).getId();
+            } else {
+                throw new IllegalArgumentException("The primary authentication object cannot be use");
+            }
     }
 
     public Optional<User> findByIdWithBindings(Long id) {

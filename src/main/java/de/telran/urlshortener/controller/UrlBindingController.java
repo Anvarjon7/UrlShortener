@@ -6,6 +6,7 @@ import de.telran.urlshortener.dto.UrlBindingResponseDto;
 import de.telran.urlshortener.mapper.Mapper;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.service.UrlBindingService;
+import de.telran.urlshortener.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class UrlBindingController {
 
     private final UrlBindingService urlBindingService;
     private final Mapper<UrlBinding, UrlBindingResponseDto> mapper;
+    private final UserService userService;
 
 
     @PostMapping("/create")
@@ -44,9 +46,9 @@ public class UrlBindingController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Set<UrlBindingResponseDto>> getByUserId(@PathVariable Long id) {
-        return ResponseEntity.ok(mapper.toDtoSet(urlBindingService.getByUserId(id)));
+    @GetMapping()
+    public ResponseEntity<Set<UrlBindingResponseDto>> getByUserId() {
+          return ResponseEntity.ok(mapper.toDtoSet(urlBindingService.getByUserId(userService.getCurrentUserId())));
     }
 
     @GetMapping("/uid/{uid}")

@@ -6,7 +6,11 @@ import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Set;
 
@@ -49,4 +53,5 @@ public class UserMapper implements Mapper<User, UserResponseDto> {
                 urlBindingMapper.toDtoSet(user.getBindings())
         );
     }
+
 }
