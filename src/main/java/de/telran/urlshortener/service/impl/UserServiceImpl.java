@@ -1,11 +1,12 @@
 package de.telran.urlshortener.service.impl;
 
 import de.telran.urlshortener.dto.UserRequestDto;
+import de.telran.urlshortener.exception.InvalidPrincipalException;
+import de.telran.urlshortener.exception.UserNotAuthenticatedException;
 import de.telran.urlshortener.exception.UserNotFoundException;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UserRepository;
 import de.telran.urlshortener.service.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,15 +36,14 @@ public class UserServiceImpl implements UserService {
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new SecurityException("User is not authenticated");
+            throw new UserNotAuthenticatedException("User is not authenticated!");
         }
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                return getByEmail(userDetails.getUsername()).getId();
-            } else {
-                throw new IllegalArgumentException("The primary authentication object cannot be use");
-            }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails userDetails) {
+            return getByEmail(userDetails.getUsername()).getId();
+        } else {
+            throw new InvalidPrincipalException("The primary authentication object cannot be use");
+        }
     }
 
     public Optional<User> findByIdWithBindings(Long id) {
@@ -64,8 +64,7 @@ public class UserServiceImpl implements UserService {
                 .password(userRequestDto.getPassword())
                 .role(userRequestDto.getRole())
                 .build();
-        User savedUser = userRepository.save(user);
-        return savedUser;
+        return userRepository.save(user);
     }
 
     @Override
@@ -78,28 +77,24 @@ public class UserServiceImpl implements UserService {
         existingUser.setEmail(userRequestDto.getEmail());
         existingUser.setPassword(userRequestDto.getPassword());
         existingUser.setRole(userRequestDto.getRole());
-        User savedUser = userRepository.save(existingUser);
-        return savedUser;
+        return userRepository.save(existingUser);
     }
 
     @Override
     public List<User> getAll() {
-        List<User> users = userRepository.findAll();
-        return users;
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<User> getById(@PathVariable Long id) {
-        Optional<User> byId = userRepository.findById(id);
 
-        return byId;
+        return userRepository.findById(id);
     }
 
     @Override
     public User getByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with " + email)); // #ToDo create own Exception
-        return user;
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with " + email));
     }
 
     @Override

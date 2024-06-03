@@ -27,5 +27,6 @@ public interface UserService {
     Optional<User> findByIdWithSubscriptions(Long id);
 
     User findById(Long id);
+
     Long getCurrentUserId();
 }

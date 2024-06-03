@@ -12,7 +12,7 @@ public interface UrlBindingRepository extends JpaRepository<UrlBinding, Long> {
 
     @EntityGraph(value = "UrlBinding.withUser", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select u from UrlBinding u where u.id = :id")
-      Set<UrlBinding> findByIdWithUser(Long id);
+    Set<UrlBinding> findByIdWithUser(Long id);
 
     @Query("select u from UrlBinding u where u.uid = :uid and u.isClosed = false and u.expirationDate >=CURRENT_DATE")
     Optional<UrlBinding> findActualByUid(String uid);
@@ -22,7 +22,7 @@ public interface UrlBindingRepository extends JpaRepository<UrlBinding, Long> {
 
     Set<UrlBinding> findByUser_Id(Long userId);
 
-//    @Query("select u from UrlBinding u where u.baseUrl || u.pathPrefix || u.uid = :shortUrl")
+    //    @Query("select u from UrlBinding u where u.baseUrl || u.pathPrefix || u.uid = :shortUrl")
     @Query("select u from UrlBinding u where u.pathPrefix || u.uid = :shortUrl")
     Optional<UrlBinding> findByShortUrl(String shortUrl);
 }

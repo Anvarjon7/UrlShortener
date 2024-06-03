@@ -30,7 +30,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Boolean isValid() {
         return !subscriptionRepository.findAllValid(userService.getCurrentUserId()).isEmpty();
     }
-   @Override
+
+    @Override
     public Boolean isValid(Long userId) {
         return !subscriptionRepository.findAllValid(userId).isEmpty();
     }
@@ -72,8 +73,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Set<Subscription> getByUserId(Long userId) {
-        Set<Subscription> byUserId = subscriptionRepository.findByUserId(userId);
-        return byUserId;
+        return subscriptionRepository.findByUserId(userId);
 
     }
 }
