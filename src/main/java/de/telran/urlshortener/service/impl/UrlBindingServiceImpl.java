@@ -3,21 +3,18 @@ package de.telran.urlshortener.service.impl;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.exception.SubscriptionExpiredException;
+import de.telran.urlshortener.exception.UrlBindingNotFoundException;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
-import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.service.SubscriptionService;
 import de.telran.urlshortener.service.UrlBindingService;
 import de.telran.urlshortener.service.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +59,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBinding getByUid(String uid) {
         return urlBindingRepository.findByUid(uid)
-                .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
+                .orElseThrow(() -> new UrlBindingNotFoundException("UrlBinding not found with such uid " + uid));
     }
 
     @Override
@@ -79,7 +76,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBinding getByShortUrl(String shortUrl, boolean isRedirect) {
         UrlBinding urlBinding = urlBindingRepository.findByShortUrl(shortUrl)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
+                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + shortUrl));
         if (isRedirect) {
             urlBinding.setCount(urlBinding.getCount() + 1);
             urlBinding = urlBindingRepository.save(urlBinding);
@@ -94,7 +91,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBinding findById(Long id) {
         return urlBindingRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
+                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + id));
     }
 }
 
