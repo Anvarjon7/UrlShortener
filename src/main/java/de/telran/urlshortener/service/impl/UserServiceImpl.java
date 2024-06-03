@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with " + email)); // #ToDo create own Exception
+                .orElseThrow(() -> new UserNotFoundException("User not found with " + email)); // #ToDo create own Exception
         return user;
     }
 

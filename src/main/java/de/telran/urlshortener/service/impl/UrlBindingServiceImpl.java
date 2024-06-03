@@ -2,6 +2,7 @@ package de.telran.urlshortener.service.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
+import de.telran.urlshortener.exception.UrlBindingNotFoundException;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
@@ -59,7 +60,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBinding getByUid(String uid) {
         UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
-                .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
+                .orElseThrow(() -> new UrlBindingNotFoundException("UrlBinding not found with such " + uid));
         return urlBinding;
     }
 
@@ -77,7 +78,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBinding getByShortUrl(String shortUrl) {
         UrlBinding urlBinding = urlBindingRepository.findByShortUrl(shortUrl)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
+                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + shortUrl));
 
         return urlBinding;
     }
@@ -85,13 +86,13 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public UrlBinding findById(Long id) {
 
-        return urlBindingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
+        return urlBindingRepository.findById(id).orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
     }
 
     @Override
     public void incrementClickCount(String uid) {
         UrlBinding urlBinding = urlBindingRepository.findByShortUrl(uid)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + uid));
+                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + uid));
 
         urlBinding.setCount(urlBinding.getCount() + 1);
         urlBindingRepository.save(urlBinding);

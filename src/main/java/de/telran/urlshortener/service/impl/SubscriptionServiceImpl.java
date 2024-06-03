@@ -48,7 +48,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Subscription getById(Long id) {
         Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found subscription with " + id));
+                .orElseThrow(() -> new SubscriptionNotFoundException("Not found subscription with " + id));
         return subscription;
     }
 
