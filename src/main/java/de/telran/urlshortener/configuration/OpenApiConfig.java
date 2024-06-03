@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
         @Bean
         public OpenAPI openAPI() {
             return new OpenAPI()
-                    .info(new Info().title("UrlShortenet project"))
+                    .info(new Info().title("UrlShortener project"))
                     .addSecurityItem(new SecurityRequirement()
                             .addList("Bearer Authentication"))
                     .components(new Components()

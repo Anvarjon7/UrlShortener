@@ -9,8 +9,8 @@ public record UrlBindingCreateRequestDto(
         @NotBlank
 //        @URL
         String originalUrl,
-        @NotNull @Positive
-        Long userId,
+//        @NotNull @Positive
+//        Long userId,
         String pathPrefix,
         @FutureOrPresent
         LocalDate expirationDate

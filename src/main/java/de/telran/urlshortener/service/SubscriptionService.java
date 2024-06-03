@@ -21,6 +21,7 @@ public interface SubscriptionService {
     Optional<Subscription> findByIdWithUser(Long id);
 
     List<Subscription> findByActual(Long userId);
+    Boolean isValid(Long userId);
     Boolean isValid();
 
 

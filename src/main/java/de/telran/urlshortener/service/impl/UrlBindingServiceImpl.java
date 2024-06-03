@@ -43,7 +43,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
                 .baseUrl("http://localhost:8090/")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
                 .expirationDate(urlBindingCreateRequestDto.expirationDate())
-                .user(userService.findById(urlBindingCreateRequestDto.userId()))
+                .user(userService.findById(userService.getCurrentUserId()))
                 .pathPrefix(urlBindingCreateRequestDto.pathPrefix())
                 .uid(NanoIdUtils.randomNanoId(DEFAULT_NUMBER_GENERATOR, DEFAULT_ALPHABET, 5))
                 .count(0L)
@@ -84,7 +84,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
             urlBinding.setCount(urlBinding.getCount() + 1);
             urlBinding = urlBindingRepository.save(urlBinding);
         }
-        if (!subscriptionService.isValid()) {
+        if (!subscriptionService.isValid(urlBinding.getUser().getId())) {
             throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
         }
 
