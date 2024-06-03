@@ -13,6 +13,8 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     @Query("SELECT s FROM Subscription s WHERE s.user.id = :userId AND s.expirationDate >= CURRENT_DATE")
     List<Subscription> findAllActual(Long userId);
+    @Query("SELECT s FROM Subscription s WHERE s.user.id = :userId AND s.status = 'PAID' AND s.expirationDate >= CURRENT_DATE")
+    List<Subscription> findAllValid(Long userId);
 
     @EntityGraph(value = "Subscription.withUser", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT s FROM Subscription s WHERE s.id = :id")

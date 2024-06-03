@@ -2,9 +2,11 @@ package de.telran.urlshortener.service.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
+import de.telran.urlshortener.exception.SubscriptionExpiredException;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.UrlBindingRepository;
+import de.telran.urlshortener.service.SubscriptionService;
 import de.telran.urlshortener.service.UrlBindingService;
 import de.telran.urlshortener.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +26,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     private final UrlBindingRepository urlBindingRepository;
 
     private final UserService userService;
+    private final SubscriptionService subscriptionService;
 
     public Optional<UrlBinding> findActualByUid(String uid) {
         return urlBindingRepository.findActualByUid(uid);
@@ -33,13 +36,14 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
         final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        Long userId = urlBindingCreateRequestDto.userId();
-        User user = userService.findById(userId);
+        if (!subscriptionService.isValid()) {
+            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
+        }
         UrlBinding urlBinding = UrlBinding.builder()
                 .baseUrl("http://localhost:8090/")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
                 .expirationDate(urlBindingCreateRequestDto.expirationDate())
-                .user(user)
+                .user(userService.findById(urlBindingCreateRequestDto.userId()))
                 .pathPrefix(urlBindingCreateRequestDto.pathPrefix())
                 .uid(NanoIdUtils.randomNanoId(DEFAULT_NUMBER_GENERATOR, DEFAULT_ALPHABET, 5))
                 .count(0L)
@@ -79,6 +83,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
         if (isRedirect) {
             urlBinding.setCount(urlBinding.getCount() + 1);
             urlBinding = urlBindingRepository.save(urlBinding);
+        }
+        if (!subscriptionService.isValid()) {
+            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
         }
 
         return urlBinding;

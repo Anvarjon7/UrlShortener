@@ -26,6 +26,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionRepository.findAllActual(userId);
     }
 
+    @Override
+    public Boolean isValid() {
+        return !subscriptionRepository.findAllValid(userService.getCurrentUserId()).isEmpty();
+    }
+
     //?????
     public Optional<Subscription> findByIdWithUser(Long id) {
         return subscriptionRepository.findByIdWithUser(id);
