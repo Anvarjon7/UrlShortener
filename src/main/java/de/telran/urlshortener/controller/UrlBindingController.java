@@ -59,7 +59,7 @@ public class UrlBindingController {
 
     @GetMapping("/shortUrl/{shortUrl}")
     public ResponseEntity<UrlBindingResponseDto> getByShortUrl(@PathVariable String shortUrl) {
-        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBindingService.getByShortUrl(shortUrl));
+        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBindingService.getByShortUrl(shortUrl, false));
         return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);
     }
 }

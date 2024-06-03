@@ -17,9 +17,7 @@ public interface UrlBindingService {
 
     void delete(Long bindingId);
 
-    UrlBinding getByShortUrl(String shortUrl);
+    UrlBinding getByShortUrl(String shortUrl, boolean isRedirect);
 
     UrlBinding findById(Long Id);
-
-    void incrementClickCount(String uid);
 }

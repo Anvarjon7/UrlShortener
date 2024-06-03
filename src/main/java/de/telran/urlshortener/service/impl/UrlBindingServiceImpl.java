@@ -45,56 +45,49 @@ public class UrlBindingServiceImpl implements UrlBindingService {
                 .count(0L)
                 .build();
 
-        UrlBinding saveUrlBinding = urlBindingRepository.save(urlBinding);
-        return saveUrlBinding;
+        return urlBindingRepository.save(urlBinding);
     }
 
     @Override
     public void close(Long bindingId) {
-        UrlBinding urlBinding = urlBindingRepository.findById(bindingId).get();
+        UrlBinding urlBinding = findById(bindingId);
         urlBinding.setIsClosed(true);
         urlBindingRepository.save(urlBinding);
     }
 
     @Override
     public UrlBinding getByUid(String uid) {
-        UrlBinding urlBinding = urlBindingRepository.findByUid(uid)
+        return urlBindingRepository.findByUid(uid)
                 .orElseThrow(() -> new RuntimeException("UrlBinding not found"));
-        return urlBinding;
     }
 
     @Override
     public Set<UrlBinding> getByUserId(Long userId) {
-        Set<UrlBinding> urlBindings = urlBindingRepository.findByUser_Id(userId);
-        return urlBindings;
+        return urlBindingRepository.findByUser_Id(userId);
     }
 
     @Override
     public void delete(Long bindingId) {
-        urlBindingRepository.deleteById(bindingId);
+        UrlBinding urlBinding = findById(bindingId);
+        urlBindingRepository.delete(urlBinding);
     }
 
     @Override
-    public UrlBinding getByShortUrl(String shortUrl) {
+    public UrlBinding getByShortUrl(String shortUrl, boolean isRedirect) {
         UrlBinding urlBinding = urlBindingRepository.findByShortUrl(shortUrl)
                 .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));
+        if (isRedirect) {
+            urlBinding.setCount(urlBinding.getCount() + 1);
+            urlBinding = urlBindingRepository.save(urlBinding);
+        }
 
         return urlBinding;
     }
 
     @Override
     public UrlBinding findById(Long id) {
-
-        return urlBindingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
-    }
-
-    @Override
-    public void incrementClickCount(String uid) {
-        UrlBinding urlBinding = urlBindingRepository.findByShortUrl(uid)
-                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + uid));
-
-        urlBinding.setCount(urlBinding.getCount() + 1);
-        urlBindingRepository.save(urlBinding);
+        return urlBindingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Not found urlBinding with " + id));// #TODO create own Exception
     }
 }
 

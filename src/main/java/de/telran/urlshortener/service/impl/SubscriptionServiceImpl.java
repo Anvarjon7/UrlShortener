@@ -18,6 +18,7 @@ import java.util.Set;
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
+
     private final UserService userService;
 
 
@@ -25,6 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionRepository.findAllActual(userId);
     }
 
+    //?????
     public Optional<Subscription> findByIdWithUser(Long id) {
         return subscriptionRepository.findByIdWithUser(id);
     }
@@ -46,23 +48,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription getById(Long id) {
-        Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found subscription with " + id));
-        return subscription;
-    }
-
-    @Override
     public Subscription setPaidStatus(Long id) {
-        Optional<Subscription> subscription = subscriptionRepository.findById(id);
-        subscription.get().setStatus(Status.PAID);
-        return subscriptionRepository.save(subscription.get());
-
+        Subscription subscription = findById(id);
+        subscription.setStatus(Status.PAID);
+        return subscriptionRepository.save(subscription);
     }
 
     @Override
     public void delete(Long id) {
-        subscriptionRepository.deleteById(id);
+        Subscription subscription = findById(id);
+        subscriptionRepository.delete(subscription);
     }
 
 

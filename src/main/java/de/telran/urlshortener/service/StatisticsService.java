@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface StatisticsService {
 
-    UserStatisticsResponse getUserStatistics(Long userId);
+    UserStatisticsResponse getByUser(Long userId);
 
     TopBindingStatisticsResponse getBindingTop(int topParam);
 
-    List<UserStatisticsResponse> getAllUserStatistics();
+    List<UserStatisticsResponse> getAll();
+
+    UserStatisticsResponse getByCurrentUser();
 }

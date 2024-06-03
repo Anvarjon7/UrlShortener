@@ -3,7 +3,6 @@ package de.telran.urlshortener.controller;
 import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.UserStatisticsResponse;
 import de.telran.urlshortener.service.StatisticsService;
-import de.telran.urlshortener.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +18,15 @@ import java.util.List;
 public class StatisticsController {
 
     private final StatisticsService statisticsService;
-    private final UserService userService;
-    @GetMapping("/getStatistics/{userId}")
-    public ResponseEntity<UserStatisticsResponse> getStatistics(@PathVariable Long userId) {
-        UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(userId);
-        return ResponseEntity.ok(userStatistics);
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserStatisticsResponse> getByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(statisticsService.getByUser(userId));
     }
-    @GetMapping("/getStatistics")
-    public ResponseEntity<UserStatisticsResponse> getStatistics() {
-        Long userId = userService.getCurrentUserId();
-        UserStatisticsResponse userStatistics = statisticsService.getUserStatistics(userId);
-        return ResponseEntity.ok(userStatistics);
+
+    @GetMapping("/current")
+    public ResponseEntity<UserStatisticsResponse> getByCurrentUser() {
+        return ResponseEntity.ok(statisticsService.getByCurrentUser());
     }
 
     @GetMapping("/top/{top}")
@@ -38,10 +35,8 @@ public class StatisticsController {
         return ResponseEntity.ok(topBindingStatistics);
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<UserStatisticsResponse>> getUserStatistics() {
-        List<UserStatisticsResponse> userStatistics = statisticsService.getAllUserStatistics();
-        return ResponseEntity.ok(userStatistics);
+    @GetMapping
+    public ResponseEntity<List<UserStatisticsResponse>> getAll() {
+        return ResponseEntity.ok(statisticsService.getAll());
     }
-
 }

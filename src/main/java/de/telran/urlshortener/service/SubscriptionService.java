@@ -12,8 +12,6 @@ public interface SubscriptionService {
 
     Subscription create(Long userId);
 
-    Subscription getById(Long id);
-
     Subscription setPaidStatus(Long id);
 
     void delete(Long id);
