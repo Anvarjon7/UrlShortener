@@ -1,4 +1,4 @@
-package de.telran.urlshortener.service.impl;
+package de.telran.urlshortener.serviceTest;
 
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.service.SubscriptionService;

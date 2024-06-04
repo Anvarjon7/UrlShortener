@@ -32,4 +32,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUrlBindingNotFoundException(UrlBindingNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(SubscriptionExpiredException.class)
+    public ResponseEntity<String> handleSubscriptionExpiredException(SubscriptionExpiredException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
 }

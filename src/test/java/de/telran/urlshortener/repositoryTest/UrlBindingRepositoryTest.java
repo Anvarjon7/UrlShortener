@@ -1,6 +1,9 @@
-package de.telran.urlshortener.repository;
+package de.telran.urlshortener.repositoryTest;
 
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
+import de.telran.urlshortener.repository.UrlBindingRepository;
+import de.telran.urlshortener.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import java.util.Optional;
 import java.util.Set;
 
-import static de.telran.urlshortener.repository.RepositoryTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -37,36 +39,36 @@ class UrlBindingRepositoryTest {
 
     @Test
     void findActualByUid() {
-        entityManager.persistAndFlush(USER1);
-        entityManager.persistAndFlush(URLBINDING1);
-        Optional<UrlBinding> actual = urlBindingRepository.findActualByUid(URLBINDING1.getUid());
+        entityManager.persistAndFlush(RepositoryTestData.USER1);
+        entityManager.persistAndFlush(RepositoryTestData.URLBINDING1);
+        Optional<UrlBinding> actual = urlBindingRepository.findActualByUid(RepositoryTestData.URLBINDING1.getUid());
         assertTrue(actual.isPresent());
-        assertEquals(URLBINDING1, actual.get());
+        Assertions.assertEquals(RepositoryTestData.URLBINDING1, actual.get());
     }
 
     @Test
     void findByUid() {
-        entityManager.persistAndFlush(USER2);
-        entityManager.persistAndFlush(URLBINDING2);
-        Optional<UrlBinding> actual = urlBindingRepository.findByUid(URLBINDING2.getUid());
+        entityManager.persistAndFlush(RepositoryTestData.USER2);
+        entityManager.persistAndFlush(RepositoryTestData.URLBINDING2);
+        Optional<UrlBinding> actual = urlBindingRepository.findByUid(RepositoryTestData.URLBINDING2.getUid());
         assertTrue(actual.isPresent());
-        assertEquals(URLBINDING2, actual.get());
+        Assertions.assertEquals(RepositoryTestData.URLBINDING2, actual.get());
     }
 
     @Test
     void findByShortUrl() {
-        entityManager.persistAndFlush(USER3);
-        entityManager.persistAndFlush(URLBINDING3);
-        Optional<UrlBinding> actual = urlBindingRepository.findByShortUrl(URLBINDING3.getShort());
+        entityManager.persistAndFlush(RepositoryTestData.USER3);
+        entityManager.persistAndFlush(RepositoryTestData.URLBINDING3);
+        Optional<UrlBinding> actual = urlBindingRepository.findByShortUrl(RepositoryTestData.URLBINDING3.getShort());
         assertTrue(actual.isPresent());
-        assertEquals(URLBINDING3, actual.get());
+        Assertions.assertEquals(RepositoryTestData.URLBINDING3, actual.get());
     }
 
     @Test
     void findByUser_Id() {
-        entityManager.persistAndFlush(USER4);
-        entityManager.persistAndFlush(URLBINDING4);
-        Long userId = USER4.getId();
+        entityManager.persistAndFlush(RepositoryTestData.USER4);
+        entityManager.persistAndFlush(RepositoryTestData.URLBINDING4);
+        Long userId = RepositoryTestData.USER4.getId();
         Set<UrlBinding> actual = urlBindingRepository.findByUser_Id(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(urlBinding -> urlBinding.getUser().getId().equals(userId)));

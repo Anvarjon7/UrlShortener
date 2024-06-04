@@ -1,6 +1,8 @@
-package de.telran.urlshortener.repository;
+package de.telran.urlshortener.repositoryTest;
 
 import de.telran.urlshortener.model.entity.user.User;
+import de.telran.urlshortener.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.Optional;
 
-import static de.telran.urlshortener.repository.RepositoryTestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,35 +32,35 @@ class UserRepositoryTest {
 
     @Test
     void findByIdWithSubscriptions() {
-        entityManager.persistAndFlush(USER1);
-        Optional<User> actualUser = userRepository.findByIdWithSubscriptions(USER1.getId());
+        entityManager.persistAndFlush(RepositoryTestData.USER1);
+        Optional<User> actualUser = userRepository.findByIdWithSubscriptions(RepositoryTestData.USER1.getId());
         assertTrue(actualUser.isPresent());
-        assertEquals(USER1, actualUser.get());
+        Assertions.assertEquals(RepositoryTestData.USER1, actualUser.get());
     }
 
     @Test
     void findByIdWithBindings() {
-        entityManager.persistAndFlush(USER2);
-        Optional<User> actualUser = userRepository.findByIdWithBindings(USER2.getId());
+        entityManager.persistAndFlush(RepositoryTestData.USER2);
+        Optional<User> actualUser = userRepository.findByIdWithBindings(RepositoryTestData.USER2.getId());
         assertTrue(actualUser.isPresent());
-        assertEquals(USER2, actualUser.get());
+        Assertions.assertEquals(RepositoryTestData.USER2, actualUser.get());
     }
 
     @Test
     void findByIdWithUrlBindingsAndSubscriptions() {
-        entityManager.persistAndFlush(USER3);
-        entityManager.persistAndFlush(USER3);
-        entityManager.persistAndFlush(USER3);
-        Optional<User> actualUser = userRepository.findByIdWithUrlBindingsAndSubscriptions(USER3.getId());
+        entityManager.persistAndFlush(RepositoryTestData.USER3);
+        entityManager.persistAndFlush(RepositoryTestData.USER3);
+        entityManager.persistAndFlush(RepositoryTestData.USER3);
+        Optional<User> actualUser = userRepository.findByIdWithUrlBindingsAndSubscriptions(RepositoryTestData.USER3.getId());
         assertTrue(actualUser.isPresent());
-        assertEquals(USER3, actualUser.get());
+        Assertions.assertEquals(RepositoryTestData.USER3, actualUser.get());
     }
 
     @Test
     void findByEmail() {
-        entityManager.persistAndFlush(USER4);
-        Optional<User> actualUser = userRepository.findByEmail(USER4.getEmail());
+        entityManager.persistAndFlush(RepositoryTestData.USER4);
+        Optional<User> actualUser = userRepository.findByEmail(RepositoryTestData.USER4.getEmail());
         assertTrue(actualUser.isPresent());
-        assertEquals(USER4, actualUser.get());
+        Assertions.assertEquals(RepositoryTestData.USER4, actualUser.get());
     }
 }
