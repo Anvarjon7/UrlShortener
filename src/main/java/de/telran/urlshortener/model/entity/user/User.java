@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor (access = AccessLevel.PRIVATE)
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(exclude = {"bindings","subscriptions"})
 @ToString(exclude = {"bindings","subscriptions"})
 @NamedEntityGraphs({
