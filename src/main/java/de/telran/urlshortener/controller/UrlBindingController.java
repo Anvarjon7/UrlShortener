@@ -53,7 +53,7 @@ public class UrlBindingController {
 
     @GetMapping("/uid/{uid}")
     public ResponseEntity<UrlBindingResponseDto> getByUid(@PathVariable String uid) {
-        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBindingService.getByUid(uid));
+        UrlBindingResponseDto urlBindingResponseDto = mapper.toDto(urlBindingService.getByUid(uid).get());
         return new ResponseEntity<>(urlBindingResponseDto, HttpStatus.OK);
     }
 
