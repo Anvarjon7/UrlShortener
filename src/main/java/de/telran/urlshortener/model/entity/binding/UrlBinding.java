@@ -24,19 +24,14 @@ public class UrlBinding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter
     private Long id;
     @Column(name = "original_url", nullable = false, length = 2048)
-    @Getter @Setter
     private String originalUrl;
     @Column(name = "base_url", nullable = false)
-    @Getter @Setter
-    private String baseUrl;
+     private String baseUrl;
     @Column(name = "path_prefix", nullable = false)
-    @Getter @Setter
     private String pathPrefix;
     @Column(name = "uid", nullable = false, unique = true)
-    @Getter @Setter
     private String uid;
 
     private Long count = 0L;
