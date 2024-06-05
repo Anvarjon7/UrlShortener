@@ -26,6 +26,7 @@ class UrlBindingRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
+
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
@@ -40,7 +41,7 @@ class UrlBindingRepositoryTest {
         entityManager.persistAndFlush(URLBINDING1);
         Optional<UrlBinding> actual = urlBindingRepository.findActualByUid(URLBINDING1.getUid());
         assertTrue(actual.isPresent());
-        assertEquals(URLBINDING1,actual.get());
+        assertEquals(URLBINDING1, actual.get());
     }
 
     @Test
@@ -49,7 +50,7 @@ class UrlBindingRepositoryTest {
         entityManager.persistAndFlush(URLBINDING2);
         Optional<UrlBinding> actual = urlBindingRepository.findByUid(URLBINDING2.getUid());
         assertTrue(actual.isPresent());
-        assertEquals(URLBINDING2,actual.get());
+        assertEquals(URLBINDING2, actual.get());
     }
 
     @Test
@@ -58,7 +59,7 @@ class UrlBindingRepositoryTest {
         entityManager.persistAndFlush(URLBINDING3);
         Optional<UrlBinding> actual = urlBindingRepository.findByShortUrl(URLBINDING3.getShort());
         assertTrue(actual.isPresent());
-        assertEquals(URLBINDING3,actual.get());
+        assertEquals(URLBINDING3, actual.get());
     }
 
     @Test
@@ -68,6 +69,6 @@ class UrlBindingRepositoryTest {
         Long userId = USER4.getId();
         Set<UrlBinding> actual = urlBindingRepository.findByUser_Id(userId);
         assertFalse(actual.isEmpty());
-        assertTrue(actual.stream().allMatch(urlBinding->urlBinding.getUser().getId().equals(userId)));
+        assertTrue(actual.stream().allMatch(urlBinding -> urlBinding.getUser().getId().equals(userId)));
     }
 }

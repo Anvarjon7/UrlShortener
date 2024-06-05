@@ -44,7 +44,7 @@ class SubscriptionRepositoryTest {
         Long userId = USER1.getId();
         List<Subscription> actual = subscriptionRepository.findAllActual(userId);
         assertFalse(actual.isEmpty());
-        assertTrue(actual.stream().allMatch(subscription->
+        assertTrue(actual.stream().allMatch(subscription ->
                 subscription.getUser().getId().equals(userId)
                         && subscription.getExpirationDate().isAfter(LocalDate.now())
         ));
@@ -57,7 +57,7 @@ class SubscriptionRepositoryTest {
         Long userId = USER2.getId();
         List<Subscription> actual = subscriptionRepository.findAllValid(userId);
         assertFalse(actual.isEmpty());
-        assertTrue(actual.stream().allMatch(subscription->
+        assertTrue(actual.stream().allMatch(subscription ->
                 subscription.getUser().getId().equals(userId)
                         && subscription.getStatus().equals(Status.PAID)
                         && subscription.getExpirationDate().isAfter(LocalDate.now())
@@ -71,8 +71,8 @@ class SubscriptionRepositoryTest {
         entityManager.persistAndFlush(SUBSCRIPTION3);
         Optional<Subscription> actual = subscriptionRepository.findByIdWithUser(SUBSCRIPTION3.getId());
         assertFalse(actual.isEmpty());
-        assertEquals(SUBSCRIPTION3,actual.get());
-        assertEquals(USER3,actual.get().getUser());
+        assertEquals(SUBSCRIPTION3, actual.get());
+        assertEquals(USER3, actual.get().getUser());
     }
 
     @Test
@@ -82,7 +82,7 @@ class SubscriptionRepositoryTest {
         Long userId = USER4.getId();
         Set<Subscription> actual = subscriptionRepository.findByUserId(userId);
         assertFalse(actual.isEmpty());
-        assertTrue(actual.stream().allMatch(subscription->subscription.getUser().getId().equals(userId)));
+        assertTrue(actual.stream().allMatch(subscription -> subscription.getUser().getId().equals(userId)));
 
     }
 }
