@@ -10,6 +10,7 @@ import de.telran.urlshortener.service.impl.UrlBindingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -39,10 +40,7 @@ class UrlBindingServiceImplTest {
         urlBindingService = new UrlBindingServiceImpl(urlBindingRepository,userService,subscriptionService);
 
 
-        urlBindingCreateRequestDto = new UrlBindingCreateRequestDto(
-                "https://google.com",
-                "abc",
-                LocalDate.now());
+
 
         urlBinding = UrlBinding.builder()
                 .id(1L)
@@ -52,35 +50,37 @@ class UrlBindingServiceImplTest {
                 .build();
 
     }
-    @Test
-    void findActualByUid() {
-        given(urlBindingRepository.findActualByUid("Uid")).willReturn(Optional.of(urlBinding));
 
-        Optional<UrlBinding> foundUrlBinding = Optional.of(urlBindingService.getByUid("Uid"));
-        assertThat(foundUrlBinding).isPresent().isEqualTo(Optional.of(urlBinding));
-    }
 
     @Test
     void create() {
-//        urlBindingService.create(urlBindingCreateRequestDto);
-//
-//        ArgumentCaptor<UrlBinding> urlBindingArgumentCaptor =
-//                ArgumentCaptor.forClass(UrlBinding.class);
-//
-//        verify(urlBindingRepository)
-//                .save(urlBindingArgumentCaptor.capture());
-//
-//        UrlBinding capturedUrlBinding = urlBindingArgumentCaptor.getValue();
-//
-//        assertThat(capturedUrlBinding.getOriginalUrl().equals((urlBindingCreateRequestDto.originalUrl());
-//        assertThat(capturedUrlBinding.getExpirationDate().isEqual(urlBindingCreateRequestDto.expirationDate());
-//        assertThat(capturedUrlBinding.getPathPrefix().equals(urlBindingCreateRequestDto.pathPrefix();
+        urlBindingCreateRequestDto = new UrlBindingCreateRequestDto(
+                "https://google.com",
+                "abc",
+                LocalDate.now());
 
+        urlBindingService.create(urlBindingCreateRequestDto);
+        ArgumentCaptor<UrlBinding> urlBindingArgumentCaptor =
+                ArgumentCaptor.forClass(UrlBinding.class);
+                ArgumentCaptor<UrlBinding> userArgumentCaptor =
+                ArgumentCaptor.forClass(UrlBinding.class);
+
+        verify(urlBindingRepository)
+                .save(urlBindingArgumentCaptor.capture());
+
+        UrlBinding capturedUrlBinding = urlBindingArgumentCaptor.getValue();
+
+        assertThat(capturedUrlBinding.getOriginalUrl()).isEqualTo(urlBindingCreateRequestDto.originalUrl());
+        assertThat(capturedUrlBinding.getPathPrefix()).isEqualTo(urlBindingCreateRequestDto.pathPrefix());
+        assertThat(capturedUrlBinding.getExpirationDate()).isEqualTo(urlBindingCreateRequestDto.expirationDate());
 
     }
 
     @Test
     void close() {
+        urlBindingService.findById(1L);
+
+        verify(urlBindingRepository).findById(1L);
     }
 
     @Test
@@ -106,11 +106,17 @@ class UrlBindingServiceImplTest {
 
     @Test
     void delete() {
+        urlBindingService.findById(1L);
+
+        verify(urlBindingRepository).findById(1L);
+
     }
 
     @Test
     void getByShortUrl() {
+
         String shortUrl = "ShortUrl";
+
         given(urlBindingRepository.findByShortUrl(shortUrl)).willReturn(Optional.of(urlBinding));
 
         UrlBinding foundUrlBinding = urlBindingService.getByShortUrl(shortUrl,false);

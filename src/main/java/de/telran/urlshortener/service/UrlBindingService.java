@@ -12,7 +12,7 @@ public interface UrlBindingService {
 
     void close(Long bindingId);
 
-    UrlBinding getByUid(String uid);
+    Optional<UrlBinding> getByUid(String uid);
 
     Set<UrlBinding> getByUserId(Long userId);
 

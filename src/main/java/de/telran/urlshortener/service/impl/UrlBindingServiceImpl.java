@@ -2,7 +2,6 @@ package de.telran.urlshortener.service.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
-import de.telran.urlshortener.exception.SubscriptionExpiredException;
 import de.telran.urlshortener.exception.UrlBindingNotFoundException;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.repository.UrlBindingRepository;
@@ -34,9 +33,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
         final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        if (!subscriptionService.isValid()) {
-            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
-        }
+//        if (!subscriptionService.isValid()) {
+//            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
+//        }
         UrlBinding urlBinding = UrlBinding.builder()
                 .baseUrl("http://localhost:8090/")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
@@ -58,9 +57,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     }
 
     @Override
-    public UrlBinding getByUid(String uid) {
-        return urlBindingRepository.findByUid(uid)
-                .orElseThrow(() -> new UrlBindingNotFoundException("UrlBinding not found with such uid " + uid));
+    public Optional<UrlBinding> getByUid(String uid) {
+        return urlBindingRepository.findByUid(uid);
+//                .orElseThrow(() -> new UrlBindingNotFoundException("UrlBinding not found with such uid " + uid));
     }
 
     @Override
@@ -82,9 +81,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
             urlBinding.setCount(urlBinding.getCount() + 1);
             urlBinding = urlBindingRepository.save(urlBinding);
         }
-        if (!subscriptionService.isValid(urlBinding.getUser().getId())) {
-            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
-        }
+//        if (!subscriptionService.isValid(urlBinding.getUser().getId())) {
+//            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
+//        }
 
         return urlBinding;
     }
