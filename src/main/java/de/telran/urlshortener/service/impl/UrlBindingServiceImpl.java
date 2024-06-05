@@ -11,6 +11,7 @@ import de.telran.urlshortener.service.UrlBindingService;
 import de.telran.urlshortener.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.SecureRandom;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public void close(Long bindingId) {
-        UrlBinding urlBinding = findById(bindingId);
+        UrlBinding urlBinding = findById(bindingId).get();
         urlBinding.setIsClosed(true);
         urlBindingRepository.save(urlBinding);
     }
@@ -69,8 +70,8 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public void delete(Long bindingId) {
-        UrlBinding urlBinding = findById(bindingId);
-        urlBindingRepository.delete(urlBinding);
+        Optional<UrlBinding> urlBinding = findById(bindingId);
+        urlBindingRepository.delete(urlBinding.get());
     }
 
     @Override
@@ -89,9 +90,10 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     }
 
     @Override
-    public UrlBinding findById(Long id) {
-        return urlBindingRepository.findById(id)
-                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + id));
+    public Optional<UrlBinding> findById(@PathVariable Long id) {
+        return urlBindingRepository.findById(id);
+//                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + id));
+
     }
 }
 

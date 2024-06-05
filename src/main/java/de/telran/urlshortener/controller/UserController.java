@@ -38,11 +38,22 @@ public class UserController {
                 .body(mapper.toDto(userService.register(userRequestDto)));
     }
 
+    @PutMapping({"{id}"})
+    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
+        userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));
+    }
     @PutMapping()
     public ResponseEntity<UserResponseDto> update( @RequestBody @Valid UserRequestDto userRequestDto) {
         Long id = userService.getCurrentUserId();
         userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping()
@@ -64,5 +75,19 @@ public class UserController {
                     .body(mapper.toDto(userService.getByEmail(userDetails.getUsername())));
         }
         return null;
+    }
+    @GetMapping
+    public ResponseEntity<List<FullUserResponseDto>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAll().stream().map(mapper::toFullUserResponseDto)
+                .collect(Collectors.toList()));
+    }
+    @GetMapping("/id/{id}")
+    public ResponseEntity<UserResponseDto> getById(@PathVariable Long id) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getById(id).get()));
+    }
+    @GetMapping("/{email}")
+    public ResponseEntity<UserResponseDto> getByEmail(@PathVariable String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.getByEmail(email)));
     }
 }
