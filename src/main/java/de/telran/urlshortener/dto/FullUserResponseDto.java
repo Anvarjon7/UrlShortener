@@ -1,8 +1,6 @@
 package de.telran.urlshortener.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import de.telran.urlshortener.model.entity.binding.UrlBinding;
-import de.telran.urlshortener.model.entity.subscription.Subscription;
 
 import java.util.Set;
 
