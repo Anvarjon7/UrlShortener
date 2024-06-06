@@ -2,6 +2,7 @@ package de.telran.urlshortener.service.impl;
 
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.exception.InvalidPrincipalException;
+import de.telran.urlshortener.exception.UserAlreadyExistsException;
 import de.telran.urlshortener.exception.UserNotAuthenticatedException;
 import de.telran.urlshortener.exception.UserNotFoundException;
 import de.telran.urlshortener.model.entity.user.User;
@@ -57,6 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(UserRequestDto userRequestDto) {
+        if (userRepository.existsByEmail(userRequestDto.getEmail())) {
+            throw new UserAlreadyExistsException("User already exists with email " + userRequestDto.getEmail() + "!");
+        }
         User user = User.builder()
                 .firstName(userRequestDto.getFirstName())
                 .lastName(userRequestDto.getLastName())
@@ -94,11 +98,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with " + email));
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " does not exist!"));
     }
 
     @Override
     public void delete(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("User not found with id " + id);
+        }
         userRepository.deleteById(id);
     }
 }

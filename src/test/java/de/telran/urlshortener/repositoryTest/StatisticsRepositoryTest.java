@@ -1,7 +1,8 @@
-package de.telran.urlshortener.repository;
+package de.telran.urlshortener.repositoryTest;
 
 import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.TopRecord;
+import de.telran.urlshortener.repository.StatisticsRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static de.telran.urlshortener.repository.RepositoryTestData.*;
+import static de.telran.urlshortener.repositoryTest.RepositoryTestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest

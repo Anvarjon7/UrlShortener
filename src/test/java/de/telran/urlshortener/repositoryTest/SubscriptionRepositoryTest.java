@@ -1,7 +1,10 @@
-package de.telran.urlshortener.repository;
+package de.telran.urlshortener.repositoryTest;
 
 import de.telran.urlshortener.model.entity.subscription.Status;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
+import de.telran.urlshortener.repository.SubscriptionRepository;
+import de.telran.urlshortener.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static de.telran.urlshortener.repository.RepositoryTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -39,9 +41,9 @@ class SubscriptionRepositoryTest {
 
     @Test
     void findAllActual() {
-        entityManager.persistAndFlush(USER1);
-        entityManager.persistAndFlush(SUBSCRIPTION1);
-        Long userId = USER1.getId();
+        entityManager.persistAndFlush(RepositoryTestData.USER1);
+        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION1);
+        Long userId = RepositoryTestData.USER1.getId();
         List<Subscription> actual = subscriptionRepository.findAllActual(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(subscription ->
@@ -52,9 +54,9 @@ class SubscriptionRepositoryTest {
 
     @Test
     void findAllValid() {
-        entityManager.persistAndFlush(USER2);
-        entityManager.persistAndFlush(SUBSCRIPTION2);
-        Long userId = USER2.getId();
+        entityManager.persistAndFlush(RepositoryTestData.USER2);
+        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION2);
+        Long userId = RepositoryTestData.USER2.getId();
         List<Subscription> actual = subscriptionRepository.findAllValid(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(subscription ->
@@ -67,19 +69,19 @@ class SubscriptionRepositoryTest {
 
     @Test
     void findByIdWithUser() {
-        entityManager.persistAndFlush(USER3);
-        entityManager.persistAndFlush(SUBSCRIPTION3);
-        Optional<Subscription> actual = subscriptionRepository.findByIdWithUser(SUBSCRIPTION3.getId());
+        entityManager.persistAndFlush(RepositoryTestData.USER3);
+        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION3);
+        Optional<Subscription> actual = subscriptionRepository.findByIdWithUser(RepositoryTestData.SUBSCRIPTION3.getId());
         assertFalse(actual.isEmpty());
-        assertEquals(SUBSCRIPTION3, actual.get());
-        assertEquals(USER3, actual.get().getUser());
+        Assertions.assertEquals(RepositoryTestData.SUBSCRIPTION3, actual.get());
+        Assertions.assertEquals(RepositoryTestData.USER3, actual.get().getUser());
     }
 
     @Test
     void findByUserId() {
-        entityManager.persistAndFlush(USER4);
-        entityManager.persistAndFlush(SUBSCRIPTION4);
-        Long userId = USER4.getId();
+        entityManager.persistAndFlush(RepositoryTestData.USER4);
+        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION4);
+        Long userId = RepositoryTestData.USER4.getId();
         Set<Subscription> actual = subscriptionRepository.findByUserId(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(subscription -> subscription.getUser().getId().equals(userId)));

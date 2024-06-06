@@ -1,4 +1,4 @@
-package de.telran.urlshortener.repository;
+package de.telran.urlshortener.repositoryTest;
 
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.subscription.Status;
