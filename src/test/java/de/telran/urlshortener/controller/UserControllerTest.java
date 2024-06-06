@@ -1,6 +1,7 @@
 package de.telran.urlshortener.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.telran.urlshortener.UrlShortenerApplication;
 import de.telran.urlshortener.dto.UserRequestDto;
 import de.telran.urlshortener.dto.UserResponseDto;
 import de.telran.urlshortener.model.entity.user.Role;
@@ -9,10 +10,10 @@ import de.telran.urlshortener.security.AuthenticationService;
 import de.telran.urlshortener.security.model.JwtAuthenticationResponse;
 import de.telran.urlshortener.security.model.SignInRequest;
 import de.telran.urlshortener.service.UserService;
+import de.telran.urlshortener.testData.UserTestData;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +27,25 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
+import static de.telran.urlshortener.repository.RepositoryTestData.USER1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ContextConfiguration
+@ContextConfiguration(classes = {UserTestData.class, UrlShortenerApplication.class})
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
@@ -49,22 +55,16 @@ class UserControllerTest {
     private AuthenticationService authenticationService;
     @MockBean
     private UserService userService;
-    @InjectMocks
-    private UserController userController;
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     @SneakyThrows
-    void createTest() throws Exception {
-
+    void createTest() {
         UserRequestDto userRequestDto = new UserRequestDto(
-                "Linda", "Din", "san@example.com", "password123", Role.ADMIN);
-        UserResponseDto userResponseDto = new UserResponseDto(1L, "Linda", "Din", "san@example.com");
-
+                "A", "B", "san@example.com", "1", Role.USER);
 
         when(userService.register(any(UserRequestDto.class))).thenReturn(User.builder().build());
-
 
         var result = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +77,6 @@ class UserControllerTest {
 
         UserResponseDto actual = objectMapper.readValue(jsonResponse, UserResponseDto.class);
 
-
         assertNotNull(actual.id());
         assertEquals(userRequestDto.getFirstName(), actual.firstName());
         assertEquals(userRequestDto.getLastName(), actual.lastName());
@@ -87,10 +86,9 @@ class UserControllerTest {
     @Test
     @SneakyThrows
     void updateTest() {
-        Long userId = 1L;
+        Long userId = null;
         UserRequestDto userRequestDto = new UserRequestDto(
-                "Linda", "Din", "san@example.com", "password123", Role.ADMIN);
-        UserResponseDto userResponseDto = new UserResponseDto(userId, "Linda", "Din", "san@example.com");
+                "Linda", "D", "a@example.com", "1", Role.USER);
 
         when(userService.update(any(Long.class), any(UserRequestDto.class))).thenReturn(User.builder().build());
 
@@ -112,11 +110,10 @@ class UserControllerTest {
         assertEquals(userRequestDto.getEmail(), actual.email());
     }
 
-
     @Test
     @SneakyThrows
     void deleteTest() {
-        Long userId = 1L;
+        Long userId = null;
 
         doNothing().when(userService).delete(userId);
 
@@ -131,8 +128,8 @@ class UserControllerTest {
     @SneakyThrows
     void loginTest() {
         SignInRequest signInRequest = new SignInRequest();
-        signInRequest.setLogin("san@example.com");
-        signInRequest.setPassword("password123");
+        signInRequest.setLogin("k@example.com");
+        signInRequest.setPassword("1");
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse("fake-jwt-token");
 
         when(authenticationService.authenticate(any(SignInRequest.class))).thenReturn(jwtAuthenticationResponse);
@@ -146,10 +143,10 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
-    @WithMockUser(username = "testuser@example.com", roles = {"USER"})
+    @WithMockUser(username = "san@example.com", roles = {"USER"})
     void getCurrentUserTest() {
         UserResponseDto userResponseDto = new UserResponseDto(
-                1L, "Test", "User", "testuser@example.com");
+                null, "A2", "B2", "2@2.ua");
 
         when(userService.getCurrentUserId()).thenReturn(userResponseDto.id());
 
@@ -157,8 +154,79 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect((ResultMatcher) jsonPath("$.id").value(1L))
-                .andExpect((ResultMatcher) jsonPath("$.firstName").value("Test"))
-                .andExpect((ResultMatcher) jsonPath("$.lastName").value("User"))
-                .andExpect((ResultMatcher) jsonPath("$.email").value("testuser@example.com"));
+                .andExpect((ResultMatcher) jsonPath("$.firstName").value("A2"))
+                .andExpect((ResultMatcher) jsonPath("$.lastName").value("B2"))
+                .andExpect((ResultMatcher) jsonPath("$.email").value("2@2.ua"));
     }
+
+    @Test
+    @SneakyThrows
+    void getByIdTest() {
+        User expected = USER1;
+        mockMvc.perform(get("/api/users/id/{id}" + expected.getId()))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(expected.getId()))
+                .andExpect(content().json(objectMapper.writeValueAsString(expected)));
+    }
+
+    @Test
+    @SneakyThrows
+    void getByEmailTest() {
+        UserResponseDto expectedUser = new UserResponseDto(null, "A", "B", "3@3.ua");
+
+        when(userService.getByEmail("3@3.ua")).thenReturn(User.builder().build());
+
+        mockMvc.perform(get("/api/users/3@3.ua"))
+
+                .andExpect(status().isOk())
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(expectedUser.id()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(expectedUser.firstName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(expectedUser.lastName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(expectedUser.email()));
+    }
+
+    @Test
+    @SneakyThrows
+    void getAllTest() {
+        List<User> users = List.of(
+                User.builder()
+                        .id(null)
+                        .firstName("A3")
+                        .lastName("B3")
+                        .email("3@3.ua")
+                        .password("3")
+                        .role(Role.valueOf("USER"))
+                        .subscriptions(null)
+                        .bindings(null)
+                        .build(),
+                User.builder()
+                        .id(null)
+                        .firstName("A4")
+                        .lastName("B4")
+                        .email("4@4.ua")
+                        .password("4")
+                        .role(Role.valueOf("USER"))
+                        .subscriptions(null)
+                        .bindings(null)
+                        .build()
+        );
+
+        when(userService.getAll()).thenReturn(users);
+
+        mockMvc.perform(get("/api/users/"))
+
+                .andExpect(status().isOk())
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(users.get(0).getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName").value(users.get(0).getFirstName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName").value(users.get(0).getLastName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].email").value(users.get(0).getEmail()))
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(users.get(1).getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].firstName").value(users.get(1).getFirstName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].lastName").value(users.get(1).getLastName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].email").value(users.get(1).getEmail()));
+    }
+
 }
