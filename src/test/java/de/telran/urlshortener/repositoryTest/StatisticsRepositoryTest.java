@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static de.telran.urlshortener.repositoryTest.RepositoryTestData.*;
+import static de.telran.urlshortener.testData.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest

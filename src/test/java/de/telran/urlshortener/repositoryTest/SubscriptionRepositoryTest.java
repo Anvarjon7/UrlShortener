@@ -4,6 +4,7 @@ import de.telran.urlshortener.model.entity.subscription.Status;
 import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.repository.SubscriptionRepository;
 import de.telran.urlshortener.repository.UserRepository;
+import de.telran.urlshortener.testData.TestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -41,9 +43,9 @@ class SubscriptionRepositoryTest {
 
     @Test
     void findAllActual() {
-        entityManager.persistAndFlush(RepositoryTestData.USER1);
-        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION1);
-        Long userId = RepositoryTestData.USER1.getId();
+        entityManager.persistAndFlush(TestData.USER1);
+        entityManager.persistAndFlush(TestData.SUBSCRIPTION1);
+        Long userId = TestData.USER1.getId();
         List<Subscription> actual = subscriptionRepository.findAllActual(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(subscription ->
@@ -54,9 +56,9 @@ class SubscriptionRepositoryTest {
 
     @Test
     void findAllValid() {
-        entityManager.persistAndFlush(RepositoryTestData.USER2);
-        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION2);
-        Long userId = RepositoryTestData.USER2.getId();
+        entityManager.persistAndFlush(TestData.USER2);
+        entityManager.persistAndFlush(TestData.SUBSCRIPTION2);
+        Long userId = TestData.USER2.getId();
         List<Subscription> actual = subscriptionRepository.findAllValid(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(subscription ->
@@ -69,19 +71,19 @@ class SubscriptionRepositoryTest {
 
     @Test
     void findByIdWithUser() {
-        entityManager.persistAndFlush(RepositoryTestData.USER3);
-        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION3);
-        Optional<Subscription> actual = subscriptionRepository.findByIdWithUser(RepositoryTestData.SUBSCRIPTION3.getId());
+        entityManager.persistAndFlush(TestData.USER3);
+        entityManager.persistAndFlush(TestData.SUBSCRIPTION3);
+        Optional<Subscription> actual = subscriptionRepository.findByIdWithUser(TestData.SUBSCRIPTION3.getId());
         assertFalse(actual.isEmpty());
-        Assertions.assertEquals(RepositoryTestData.SUBSCRIPTION3, actual.get());
-        Assertions.assertEquals(RepositoryTestData.USER3, actual.get().getUser());
+        Assertions.assertEquals(TestData.SUBSCRIPTION3, actual.get());
+        Assertions.assertEquals(TestData.USER3, actual.get().getUser());
     }
 
     @Test
     void findByUserId() {
-        entityManager.persistAndFlush(RepositoryTestData.USER4);
-        entityManager.persistAndFlush(RepositoryTestData.SUBSCRIPTION4);
-        Long userId = RepositoryTestData.USER4.getId();
+        entityManager.persistAndFlush(TestData.USER4);
+        entityManager.persistAndFlush(TestData.SUBSCRIPTION4);
+        Long userId = TestData.USER4.getId();
         Set<Subscription> actual = subscriptionRepository.findByUserId(userId);
         assertFalse(actual.isEmpty());
         assertTrue(actual.stream().allMatch(subscription -> subscription.getUser().getId().equals(userId)));

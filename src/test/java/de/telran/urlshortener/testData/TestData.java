@@ -1,4 +1,4 @@
-package de.telran.urlshortener.repositoryTest;
+package de.telran.urlshortener.testData;
 
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.model.entity.subscription.Status;
@@ -6,7 +6,7 @@ import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.model.entity.user.Role;
 import de.telran.urlshortener.model.entity.user.User;
 
-public class RepositoryTestData {
+public class TestData {
     public static final User USER1 = User.builder()
             .id(null)
             .email("1@1.ua")
