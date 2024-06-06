@@ -1,6 +1,5 @@
 package de.telran.urlshortener.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.telran.urlshortener.dto.statistics.TopBindingStatisticsResponse;
 import de.telran.urlshortener.dto.statistics.TopRecord;
 import de.telran.urlshortener.dto.statistics.UserStatisticsResponse;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = StatisticsController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
-class StatisticsControllerTest {
+public class StatisticsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
