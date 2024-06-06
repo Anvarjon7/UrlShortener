@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static de.telran.urlshortener.serviceTest.ServiceTestData.USER1;
+import static de.telran.urlshortener.testData.TestData.USER1;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -26,7 +26,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 //@SpringBootTest
 class UrlBindingServiceImplTest {
-    @Mock private UrlBindingRepository urlBindingRepository;
+    @Mock
+    private UrlBindingRepository urlBindingRepository;
     private UrlBindingService urlBindingService;
     private UrlBindingCreateRequestDto urlBindingCreateRequestDto;
     private UrlBinding urlBinding;
@@ -37,9 +38,7 @@ class UrlBindingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        urlBindingService = new UrlBindingServiceImpl(urlBindingRepository,userService,subscriptionService);
-
-
+        urlBindingService = new UrlBindingServiceImpl(urlBindingRepository, userService, subscriptionService);
 
 
         urlBinding = UrlBinding.builder()
@@ -62,7 +61,7 @@ class UrlBindingServiceImplTest {
         urlBindingService.create(urlBindingCreateRequestDto);
         ArgumentCaptor<UrlBinding> urlBindingArgumentCaptor =
                 ArgumentCaptor.forClass(UrlBinding.class);
-                ArgumentCaptor<UrlBinding> userArgumentCaptor =
+        ArgumentCaptor<UrlBinding> userArgumentCaptor =
                 ArgumentCaptor.forClass(UrlBinding.class);
 
         verify(urlBindingRepository)
@@ -119,7 +118,7 @@ class UrlBindingServiceImplTest {
 
         given(urlBindingRepository.findByShortUrl(shortUrl)).willReturn(Optional.of(urlBinding));
 
-        UrlBinding foundUrlBinding = urlBindingService.getByShortUrl(shortUrl,false);
+        UrlBinding foundUrlBinding = urlBindingService.getByShortUrl(shortUrl, false);
         assertThat(foundUrlBinding).isNotNull();
         assertThat(foundUrlBinding).isEqualTo(urlBinding);
         verify(urlBindingRepository).findByShortUrl(shortUrl);
