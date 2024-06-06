@@ -47,6 +47,7 @@ public class ServiceTestData {
             .pathPrefix("bmw")
             .baseUrl("")
             .originalUrl("https://mail.google.com")
+            .count(0L)
             .build();
 
     public static final UrlBinding URLBINDING2 = UrlBinding.builder()
@@ -56,6 +57,7 @@ public class ServiceTestData {
             .pathPrefix("bmw")
             .baseUrl("")
             .originalUrl("https://maps.google.com/maps")
+            .count(150L)
             .build();
     public static final UrlBinding URLBINDING3 = UrlBinding.builder()
             .id(null)
@@ -64,6 +66,7 @@ public class ServiceTestData {
             .pathPrefix("bmw")
             .baseUrl("")
             .originalUrl("https://gemini.google.com")
+            .count(400L)
             .build();
     public static final UrlBinding URLBINDING4 = UrlBinding.builder()
             .id(null)
@@ -72,6 +75,7 @@ public class ServiceTestData {
             .pathPrefix("bmw")
             .baseUrl("")
             .originalUrl("https://news.google.com")
+            .count(100L)
             .build();
     public static final Subscription SUBSCRIPTION1 = Subscription.builder()
             .id(null)
