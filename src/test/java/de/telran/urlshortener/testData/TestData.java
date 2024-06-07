@@ -6,6 +6,8 @@ import de.telran.urlshortener.model.entity.subscription.Subscription;
 import de.telran.urlshortener.model.entity.user.Role;
 import de.telran.urlshortener.model.entity.user.User;
 
+import java.util.HashSet;
+
 public class TestData {
     public static final User USER1 = User.builder()
             .id(null)
@@ -14,6 +16,7 @@ public class TestData {
             .role(Role.USER)
             .firstName("A")
             .lastName("B")
+            .bindings(new HashSet<>())
             .build();
     public static final User USER2 = User.builder()
             .id(null)
@@ -22,6 +25,7 @@ public class TestData {
             .role(Role.USER)
             .firstName("A2")
             .lastName("B2")
+            .bindings(new HashSet<>())
             .build();
     public static final User USER3 = User.builder()
             .id(null)
@@ -47,6 +51,7 @@ public class TestData {
             .pathPrefix("bmw")
             .baseUrl("")
             .originalUrl("https://mail.google.com")
+            .count(0L)
             .build();
 
     public static final UrlBinding URLBINDING2 = UrlBinding.builder()
