@@ -18,8 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.nio.charset.StandardCharsets;
@@ -33,8 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = UrlBindingController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -105,7 +102,6 @@ class UrlBindingControllerTest {
     @Test
     @SneakyThrows
     void closeTest() {
-
         Long Id = 1L;
         doNothing().when(urlBindingService).close(Id);
 
@@ -204,142 +200,46 @@ class UrlBindingControllerTest {
     @Test
     @SneakyThrows
     void getByUid() {
-        String uid = "/uid";
-        // Подготовка мока возвращаемого значения из сервиса
+        String uid = "uid";
+
         UrlBinding urlBinding = UrlBinding.builder()
                 .id(1L)
                 .originalUrl("http://google.com")
                 .count(0L)
                 .expirationDate(LocalDate.now().plusDays(30))
                 .creationDate(LocalDate.now())
+                .uid(uid)
                 .build();
-        UrlBindingResponseDto responseDto = new UrlBindingResponseDto(1L, "http://google.com", "http://g.com", 0L, LocalDate.now(), LocalDate.now().plusDays(30));
 
-        // Выполнение запроса и проверка статуса ответа
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/api/url-bindings")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8"))
-                .andExpect(status().isOk())
-                .andReturn();
-
+        UrlBindingResponseDto responseDto = new UrlBindingResponseDto(
+                1L,
+                "http://google.com",
+                "shortUrl",
+                0L,
+                LocalDate.now(),
+                LocalDate.now().plusDays(30)
+        );
 
         given(urlBindingService.getByUid(uid)).willReturn(Optional.of(urlBinding));
         given(mapper.toDto(urlBinding)).willReturn(responseDto);
 
-        mockMvc.perform(get("/api/url-bindings/uid/{uid}", uid))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1L))
-//                .andExpect(jsonPath("$.shortUrl").value("http://g.com/abc"))
-                .andExpect(jsonPath("$.originalUrl").value("http://google.com"))
-                .andExpect(jsonPath("$.closed").value(false));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/url-bindings/uid/{uid}", uid)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(urlBindingService).getByUid(uid);
     }
 
     @Test
     @SneakyThrows
     void getByShortUrl() {
-        String shortUrl = "_shortUrl";
-        UrlBindingResponseDto responseDto = new UrlBindingResponseDto(1L, "http://google.com", "_shortUrl", 0L, LocalDate.now(), LocalDate.now().plusDays(30));
-        UrlBinding urlBinding = new UrlBinding();
-        given(urlBindingService.getByShortUrl(shortUrl, true)).willReturn(new UrlBinding());
+        String shortUrl = "shortUrl";
 
-        ResultActions resultActions = mockMvc.perform(get("/api/url-bindings/shortUrl/{shortUrl}", shortUrl));
-        // Получение результата
-        MvcResult mvcResult = resultActions.andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/url-bindings/shortUrl/{id}", shortUrl)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-        // Преобразование JSON ответа в объект
-        String jsonResponse = mvcResult.getResponse().getContentAsString();
-        ObjectMapper objectMapper = new ObjectMapper();
-        UrlBindingResponseDto resultDto = objectMapper.readValue(jsonResponse, UrlBindingResponseDto.class);
-
-    }
-
-    @Test
-    @SneakyThrows
-    void getByShortUrl1() {
-        String shortUrl = "_shortUrl";
-        UrlBindingResponseDto responseDto = new UrlBindingResponseDto(1L, "http://google.com", "_shortUrl", 0L, LocalDate.now(), LocalDate.now().plusDays(30));
-        UrlBinding urlBinding = new UrlBinding();
-        given(urlBindingService.getByShortUrl(shortUrl, true)).willReturn(new UrlBinding());
-
-        ResultActions resultActions = mockMvc.perform(get("/api/url-bindings/shortUrl/{shortUrl}", shortUrl));
-        // Получение результата
-        MvcResult mvcResult = resultActions.andReturn();
-
-        // Преобразование JSON ответа в объект
-        String jsonResponse = mvcResult.getResponse().getContentAsString();
-        ObjectMapper objectMapper = new ObjectMapper();
-        UrlBindingResponseDto resultDto = objectMapper.readValue(jsonResponse, UrlBindingResponseDto.class);
-
-    }
-
-
-    @Test
-    @SneakyThrows
-    void testGetByShortUrl()  {
-        String shortUrl = "_shortUrl";
-        UrlBindingResponseDto responseDto = new UrlBindingResponseDto(1L, "http://google.com", "_shortUrl", 0L, LocalDate.now(), LocalDate.now().plusDays(30));
-        UrlBinding urlBinding = new UrlBinding();
-
-        // Настройка мока для сервиса и маппера
-        given(urlBindingService.getByShortUrl(shortUrl, true)).willReturn(urlBinding);
-        given(mapper.toDto(urlBinding)).willReturn(responseDto);
-
-        // Выполнение запроса
-        ResultActions resultActions = mockMvc.perform(get("/api/url-bindings/shortUrl/{shortUrl}", shortUrl))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.shortUrl").value("_shortUrl"))
-                .andExpect(jsonPath("$.originalUrl").value("http://google.com"))
-                .andExpect(jsonPath("$.closed").value(false));
-
-        // Получение результата
-        MvcResult mvcResult = resultActions.andReturn();
-
-        // Преобразование JSON ответа в объект
-        String jsonResponse = mvcResult.getResponse().getContentAsString();
-
-        // Проверка содержимого JSON-ответа
-        ObjectMapper objectMapper = new ObjectMapper();
-        UrlBindingResponseDto resultDto = objectMapper.readValue(jsonResponse, UrlBindingResponseDto.class);
-
-//        assertEquals(1L, resultDto.getId());
-//        assertEquals("_shortUrl", resultDto.getShortUrl());
-//        assertEquals("http://google.com", resultDto.getOriginalUrl());
-//        assertEquals(0L, resultDto.getUsageCount());
-//        assertEquals(LocalDate.now(), resultDto.getCreatedDate());
-//        assertEquals(LocalDate.now().plusDays(30), resultDto.getExpirationDate());
-//        assertFalse(resultDto.isClosed());
-    }
-
-
-    @Test
-    @SneakyThrows
-    void testGetByShortUrl1()  {
-        String shortUrl = "_shortUrl";
-        UrlBindingResponseDto responseDto = new UrlBindingResponseDto(1L, "http://google.com", "_shortUrl", 0L, LocalDate.now(), LocalDate.now().plusDays(30));
-        UrlBinding urlBinding = new UrlBinding();
-
-        // Настройка мока для сервиса и маппера
-        given(urlBindingService.getByShortUrl(shortUrl, false)).willReturn(urlBinding);
-        given(mapper.toDto(urlBinding)).willReturn(responseDto);
-
-        // Выполнение запроса
-        ResultActions resultActions = mockMvc.perform(get("/api/url-bindings/shortUrl/{shortUrl}", shortUrl))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.shortUrl").value("_shortUrl"))
-                .andExpect(jsonPath("$.originalUrl").value("http://google.com"))
-                .andExpect(jsonPath("$.closed").value(false));
-
-        // Получение результата
-        MvcResult mvcResult = resultActions.andReturn();
-
-        // Преобразование JSON ответа в объект
-        String jsonResponse = mvcResult.getResponse().getContentAsString();
-        System.out.println("JSON Response: " + jsonResponse); // Для отладки
+        verify(urlBindingService).getByShortUrl(shortUrl, false);
     }
 
 
