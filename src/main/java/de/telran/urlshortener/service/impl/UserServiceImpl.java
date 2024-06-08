@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByIdWithUrlBindingsAndSubscriptions(id);
     }
 
-
     @Override
     public User register(UserRequestDto userRequestDto) {
         if (userRepository.existsByEmail(userRequestDto.getEmail())) {

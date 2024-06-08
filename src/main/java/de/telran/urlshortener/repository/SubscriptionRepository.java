@@ -21,7 +21,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     @Query("SELECT s FROM Subscription s WHERE s.id = :id")
     Optional<Subscription> findByIdWithUser(Long id);
 
-
     Set<Subscription> findByUserId(Long userId);
 
 }

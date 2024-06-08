@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-//@SpringBootTest
 class UrlBindingServiceImplTest {
     @Mock
     private UrlBindingRepository urlBindingRepository;
@@ -49,7 +48,6 @@ class UrlBindingServiceImplTest {
                 .build();
 
     }
-
 
     @Test
     void create() {
