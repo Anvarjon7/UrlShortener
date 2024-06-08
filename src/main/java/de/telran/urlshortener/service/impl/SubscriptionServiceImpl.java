@@ -58,10 +58,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription setPaidStatus(Long id) {
+    public void setPaidStatus(Long id) {
         Subscription subscription = findById(id);
         subscription.setStatus(Status.PAID);
-        return subscriptionRepository.save(subscription);
+        subscriptionRepository.save(subscription);
     }
 
     @Override

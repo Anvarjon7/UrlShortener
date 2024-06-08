@@ -35,13 +35,13 @@ public class SubscriptionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity setPaidStatus(@PathVariable Long id) {
+    public ResponseEntity<Void> setPaidStatus(@PathVariable Long id) {
         subscriptionService.setPaidStatus(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         subscriptionService.delete(id);
         return ResponseEntity.ok().build();
     }

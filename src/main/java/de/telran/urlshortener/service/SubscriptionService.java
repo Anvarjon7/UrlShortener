@@ -12,7 +12,7 @@ public interface SubscriptionService {
 
     Subscription create(Long userId);
 
-    Subscription setPaidStatus(Long id);
+    void setPaidStatus(Long id);
 
     void delete(Long id);
 
