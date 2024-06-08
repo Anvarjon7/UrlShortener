@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-//tinyurl.com/sdfsdfdf
-//localhost:8080/sdfsdfsgsdf
 
 @RestController
 @RequestMapping(value = "/api/url-bindings")

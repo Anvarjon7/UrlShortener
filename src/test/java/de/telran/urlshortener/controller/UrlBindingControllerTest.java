@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-import static de.telran.urlshortener.repositoryTest.RepositoryTestData.USER1;
+import static de.telran.urlshortener.testData.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
