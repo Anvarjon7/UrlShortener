@@ -18,7 +18,6 @@ import java.net.URI;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-//localhost:8080/url/dfsdfsfsdf
 public class UrlRedirectController {
 
     private final UrlBindingService urlBindingService;

@@ -25,17 +25,10 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     private final UserService userService;
     private final SubscriptionService subscriptionService;
 
-    public Optional<UrlBinding> findActualByUid(String uid) {
-        return urlBindingRepository.findActualByUid(uid);
-    }
-
     @Override
     public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
         final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-//        if (!subscriptionService.isValid()) {
-//            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
-//        }
         UrlBinding urlBinding = UrlBinding.builder()
                 .baseUrl("http://localhost:8090/")
                 .originalUrl(urlBindingCreateRequestDto.originalUrl())
@@ -81,9 +74,6 @@ public class UrlBindingServiceImpl implements UrlBindingService {
             urlBinding.setCount(urlBinding.getCount() + 1);
             urlBinding = urlBindingRepository.save(urlBinding);
         }
-//        if (!subscriptionService.isValid(urlBinding.getUser().getId())) {
-//            throw new SubscriptionExpiredException("Your subscription has expired. Please renew your subscription to continue using the service.");
-//        }
 
         return urlBinding;
     }
@@ -91,8 +81,6 @@ public class UrlBindingServiceImpl implements UrlBindingService {
     @Override
     public Optional<UrlBinding> findById(@PathVariable Long id) {
         return urlBindingRepository.findById(id);
-//                .orElseThrow(() -> new UrlBindingNotFoundException("Not found urlBinding with " + id));
-
     }
 }
 
