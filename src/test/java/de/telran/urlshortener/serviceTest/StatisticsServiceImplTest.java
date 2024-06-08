@@ -6,6 +6,7 @@ import de.telran.urlshortener.model.entity.user.User;
 import de.telran.urlshortener.repository.StatisticsRepository;
 import de.telran.urlshortener.service.UserService;
 import de.telran.urlshortener.service.impl.StatisticsServiceImpl;
+import de.telran.urlshortener.testData.TestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -62,7 +62,7 @@ class UrlBindingServiceImplTest {
         urlBindingService.create(urlBindingCreateRequestDto);
         ArgumentCaptor<UrlBinding> urlBindingArgumentCaptor =
                 ArgumentCaptor.forClass(UrlBinding.class);
-                ArgumentCaptor<UrlBinding> userArgumentCaptor =
+        ArgumentCaptor<UrlBinding> userArgumentCaptor =
                 ArgumentCaptor.forClass(UrlBinding.class);
 
         verify(urlBindingRepository)
