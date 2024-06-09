@@ -25,7 +25,6 @@ public class UrlBindingController {
     private final Mapper<UrlBinding, UrlBindingResponseDto> mapper;
     private final UserService userService;
 
-
     @PostMapping("/create")
     public ResponseEntity<UrlBindingResponseDto> create(@RequestBody @Valid UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)

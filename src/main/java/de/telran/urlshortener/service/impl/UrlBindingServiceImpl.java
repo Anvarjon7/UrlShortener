@@ -3,6 +3,7 @@ package de.telran.urlshortener.service.impl;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import de.telran.urlshortener.dto.UrlBindingCreateRequestDto;
 import de.telran.urlshortener.exception.UrlBindingNotFoundException;
+import de.telran.urlshortener.exception.UserNotFoundException;
 import de.telran.urlshortener.model.entity.binding.UrlBinding;
 import de.telran.urlshortener.repository.UrlBindingRepository;
 import de.telran.urlshortener.service.SubscriptionService;
@@ -27,6 +28,9 @@ public class UrlBindingServiceImpl implements UrlBindingService {
 
     @Override
     public UrlBinding create(UrlBindingCreateRequestDto urlBindingCreateRequestDto) {
+        if (!subscriptionService.isValid()){
+            throw new UserNotFoundException("Not allowed to create url binding, please subscribe before creating url binding!");
+        }
         final SecureRandom DEFAULT_NUMBER_GENERATOR = new SecureRandom();
         final char[] DEFAULT_ALPHABET = "_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         UrlBinding urlBinding = UrlBinding.builder()

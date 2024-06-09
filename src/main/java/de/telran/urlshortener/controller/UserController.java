@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));
     }
     @PutMapping()
-    public ResponseEntity<UserResponseDto> update( @RequestBody @Valid UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> update(@RequestBody @Valid UserRequestDto userRequestDto) {
         Long id = userService.getCurrentUserId();
         userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(userService.update(id, userRequestDto)));

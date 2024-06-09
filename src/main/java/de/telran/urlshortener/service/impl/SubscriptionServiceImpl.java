@@ -36,7 +36,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return !subscriptionRepository.findAllValid(userId).isEmpty();
     }
 
-    //?????
     public Optional<Subscription> findByIdWithUser(Long id) {
         return subscriptionRepository.findByIdWithUser(id);
     }

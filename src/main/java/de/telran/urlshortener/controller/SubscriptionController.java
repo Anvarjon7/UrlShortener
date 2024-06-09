@@ -53,7 +53,6 @@ public class SubscriptionController {
                 .stream().map(mapper::toDto)
                 .collect(Collectors.toSet()));
     }
-
 }
 
 
