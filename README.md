@@ -84,3 +84,8 @@ This application is a service designed to convert long URLs into short, user-fri
   - As an admin, I want to search for URL bindings by unique identifier, user, or short URL.
   - As an admin, I want to manage other administrators and user information.
   - As an admin, I want to restrict service access for users without an active subscription.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+
