@@ -48,14 +48,14 @@ This application is a service designed to convert long URLs into short, user-fri
 | **Primary Framework**                | <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="Spring" width="40" height="40"/> Spring Framework 6 with Spring Boot 3 |
 | **Data Storage**                     | <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg" alt="PostgreSQL" width="40" height="40"/> PostgreSQL                            |
 | **Data Access**                      | <img src="https://hibernate.org/images/hibernate.svg" alt="Hibernate" width="40" height="40"/> Spring Data JPA repositories based on Hibernate |
-| **User Interaction**                 | <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="Spring" width="40" height="40"/> Spring Web MVC <img src="https://www.vectorlogo.zone/logos/thymeleaf/thymeleaf-icon.svg" alt="Thymeleaf" width="40" height="40"/> Thymeleaf <img src="https://www.vectorlogo.zone/logos/json/json-icon.svg" alt="Jackson" width="40" height="40"/> Jackson    |
+| **User Interaction**                 | <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="Spring" width="40" height="40"/> Spring Web MVC <img src="https://www.vectorlogo.zone/logos/thymeleaf/thymeleaf-icon.svg" alt="Thymeleaf" width="40" height="40"/> Thymeleaf (todo)  <img src="https://www.vectorlogo.zone/logos/json/json-icon.svg" alt="Jackson" width="40" height="40"/> Jackson    |
 | **Security**                         | <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="Spring Security" width="40" height="40"/> Spring Security                       |
 | **Third-Party Service Integration**  | <img src="https://www.vectorlogo.zone/logos/feignio/feignio-icon.svg" alt="Feign" width="40" height="40"/> Spring Cloud OpenFeign                |
 | **Code Quality Assurance**           | <img src="https://junit.org/junit5/assets/img/junit5-logo.png" alt="JUnit5" width="40" height="40"/> JUnit5, Mockito                       |
 | **Code Coverage Evaluation**         | <img src="https://www.jetbrains.com/idea/img/idea_logo.svg" alt="IntelliJ IDEA" width="40" height="40"/> IntelliJ IDEA tools                   |
 | **Code Review**                      | <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="40" height="40"/> GitHub tools                          |
-| **Deployment**                       | <img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg" alt="Docker" width="40" height="40"/> Docker  (Future)                              |
-| **Documentation**                    | <img src="https://www.vectorlogo.zone/logos/openapis/openapis-icon.svg" alt="OpenAPI" width="40" height="40"/> JavaDoc (future), OpenAPI v3 (Swagger), SpringDoc |
+| **Deployment**                       | <img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg" alt="Docker" width="40" height="40"/> Docker  (todo)                              |
+| **Documentation**                    | <img src="https://www.vectorlogo.zone/logos/openapis/openapis-icon.svg" alt="OpenAPI" width="40" height="40"/> JavaDoc (todo), OpenAPI v3 (Swagger), SpringDoc |
 
 ## Entity Relationship Diagram
 
